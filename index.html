@@ -1,0 +1,25 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Presencial B3</title>
+<style>body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;margin:0;padding:16px;max-width:480px;margin:auto}.card{background:#1e293b;border-radius:14px;padding:16px;margin-bottom:12px}h1{font-size:20px}.big{font-size:44px;font-weight:700}.bar{height:12px;background:#334155;border-radius:6px;overflow:hidden;position:relative}.fill{height:100%;background:#22c55e}.meta{position:absolute;top:-3px;width:2px;height:18px;background:#facc15}.row{display:flex;justify-content:space-between;margin:6px 0}input,select,button{font-size:16px;padding:8px;border-radius:8px;border:0;margin:4px 0;width:100%;box-sizing:border-box}button{background:#3b82f6;color:#fff;font-weight:600}.warn{color:#facc15}.ok{color:#22c55e}.small{font-size:13px;color:#94a3b8}</style></head><body>
+<h1>Presencial B3 — meta 60%</h1>
+<div class="card" id="cfg" hidden><p>Cole seu token pessoal (fica salvo só neste aparelho):</p><input id="tk" type="password"><button onclick="salvaTk()">Salvar</button></div>
+<div class="card"><div class="small" id="per"></div><div class="big" id="pct">–</div><div class="bar"><div class="fill" id="fill" style="width:0"></div><div class="meta" style="left:60%"></div></div>
+<div class="row"><span>Dias presenciais</span><b id="feitos">–</b></div><div class="row"><span>Dias úteis no mês</span><b id="uteis">–</b></div><div class="row"><span>Necessários (60%)</span><b id="nec">–</b></div><div class="row"><span>Ainda faltam</span><b id="faltam">–</b></div><p id="st"></p></div>
+<div class="card" id="pend" hidden><b class="warn">Dias sem check-out</b><div id="pendl"></div></div>
+<div class="card"><b>Correção manual</b><input type="date" id="dia"><select id="acao"><option value="p1">Fui presencial</option><option value="p0">Não fui presencial</option><option value="ferias">Férias</option><option value="folga">Folga</option></select><button onclick="ajusta()">Registrar</button><div class="small" id="msg"></div></div>
+<p class="small"><a href="#" style="color:#94a3b8" onclick="localStorage.removeItem('tk');location.reload()">Trocar token</a></p>
+<script>
+const API='https://ndjklfvxyquslfkonjmg.supabase.co/functions/v1/presencial';
+const tk=()=>localStorage.getItem('tk');
+function salvaTk(){localStorage.setItem('tk',document.getElementById('tk').value.trim());location.reload()}
+const call=(p,o={})=>fetch(API+p,{...o,headers:{'Authorization':'Bearer '+tk(),'Content-Type':'application/json'}}).then(r=>{if(!r.ok)throw r.status;return r.json()});
+const br=d=>d.split('-').reverse().join('/');
+async function carrega(){if(!tk()){cfg.hidden=false;return}
+ try{const r=await call('/resumo?periodo=mes');per.textContent=br(r.inicio)+' a '+br(r.fim);pct.textContent=Math.round(r.percentual)+'%';fill.style.width=Math.min(100,r.percentual)+'%';feitos.textContent=r.dias_presenciais;uteis.textContent=r.dias_uteis;nec.textContent=r.dias_necessarios;faltam.textContent=r.faltam;
+ st.innerHTML=r.faltam<=0?'<span class="ok">Meta batida! 🎉</span>':r.da_pra_bater?'Ainda dá pra bater a meta.':'<span class="warn">Não dá mais pra bater a meta este mês.</span>';
+ if(r.pendentes_checkout&&r.pendentes_checkout.length){pend.hidden=false;pendl.innerHTML=r.pendentes_checkout.map(d=>{d=d.dia||d;return `<div class="row"><span>${br(d)}</span><span><button style="width:auto" onclick="conf('${d}',true)">Contar</button> <button style="width:auto;background:#475569" onclick="conf('${d}',false)">Não contar</button></span></div>`}).join('')}}
+ catch(e){st.innerHTML='<span class="warn">Erro ao carregar ('+e+'). Confira o token.</span>';if(e==401)cfg.hidden=false}}
+async function conf(d,p){await call('/ajuste',{method:'POST',body:JSON.stringify({dia:d,presencial:p})});carrega()}
+async function ajusta(){const d=dia.value,a=acao.value;if(!d){msg.textContent='Escolha o dia.';return}
+ try{if(a[0]=='p')await call('/ajuste',{method:'POST',body:JSON.stringify({dia:d,presencial:a=='p1'})});else await call('/ausencia',{method:'POST',body:JSON.stringify({dia:d,tipo:a})});msg.textContent='Registrado ✔';carrega()}catch(e){msg.textContent='Erro: '+e}}
+dia.value=new Date().toISOString().slice(0,10);carrega();
+</script></body></html>
