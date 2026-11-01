@@ -33,8 +33,8 @@ const ORG={gps:'GPS',wifi:'Wi-Fi',manual:'manual',ajuste:'ajuste'};
 let DIAS={};
 async function marca(t){try{await call('/'+t,{method:'POST',body:JSON.stringify({origem:'manual'})});am.textContent=(t=='checkin'?'Check-in':'Check-out')+' registrado às '+HR(new Date())+' ✔';carrega()}catch(e){am.textContent='Erro: '+e}}
 async function calendario(){try{const m=new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'}).slice(0,7);const r=await call('/dias?mes='+m);DIAS={};
- cal.replaceChildren();for(const x of ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom']){const b=document.createElement('b');b.textContent=x;cal.append(b)}
- const pad=(new Date(r.dias[0].dia+'T12:00').getDay()+6)%7;for(let i=0;i<pad;i++)cal.append(document.createElement('span'));
+ cal.replaceChildren();for(const x of ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb']){const b=document.createElement('b');b.textContent=x;cal.append(b)}
+ const pad=(new Date(r.dias[0].dia+'T12:00').getDay())%7;for(let i=0;i<pad;i++)cal.append(document.createElement('span'));
  for(const d of r.dias){if(!/^\d{4}-\d\d-\d\d$/.test(d.dia))continue;DIAS[d.dia]=d;const c=document.createElement('div');c.className='d '+(/^[a-z_]+$/.test(d.status)?d.status:'');c.dataset.dia=d.dia;c.textContent=String(+d.dia.slice(8));c.addEventListener('click',()=>toque(d.dia));cal.append(c)}
  for(const k of [...SEL])if(Multidias.motivoBloqueio(DIAS[k]))SEL.delete(k);marcaCal()}catch(e){cal.textContent='';const sp=document.createElement('span');sp.className='small';sp.textContent='Calendário indisponível ('+e+')';cal.append(sp)}}
 // ---- Vários dias de férias/folga ----
