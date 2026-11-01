@@ -60,7 +60,9 @@ async function registraVarios(){if(!SEL.size||SALVANDO)return;SALVANDO=true;atua
  await carrega()}
 acao.addEventListener('change',trocaAcao);bCan.addEventListener('click',sai);bReg.addEventListener('click',registraVarios);
 function mostra(k){const d=DIAS[k];let s=`<b>${E(br(k))}</b>: ${E(d.status.replace(/_/g,' '))}${d.horas?' · '+E(d.horas)+'h no prédio':''}${d.feriado?' · '+E(d.feriado):''}`;
- for(const g of d.registros||[])s+=`<div class="reg"><span>${HR(g.entrada)} – ${HR(g.saida)} (${E(ORG[g.origem]||g.origem)})</span><button onclick="apaga(${+g.id},'${k}')">Apagar</button></div>`;det.innerHTML=s}
+ for(const g of d.registros||[])s+=`<div class="reg"><span>${HR(g.entrada)} – ${HR(g.saida)} (${E(ORG[g.origem]||g.origem)})</span><button onclick="apaga(${+g.id},'${k}')">Apagar</button></div>`;
+ if(d.ausencia){const fe=d.ausencia=='ferias';s+=`<div class="reg"><span>${fe?'Férias registradas':'Folga registrada'}</span><button onclick="apagaAus('${k}',${fe})">Apagar</button></div>`}det.innerHTML=s}
+async function apagaAus(k,fe){if(!confirm(fe?'Apagar estas férias?':'Apagar esta folga?'))return;try{await call('/ausencias/'+k,{method:'DELETE'});await carrega();mostra(k)}catch(e){det.textContent='Erro: '+e}}
 async function apaga(id,k){if(!confirm('Apagar este registro?'))return;try{await call('/registros/'+id,{method:'DELETE'});await carrega();mostra(k)}catch(e){det.textContent='Erro: '+e}}
 dia.value=new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'});carrega();
 </script></body></html>
