@@ -1,13 +1,13 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Presencial B3</title><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="favicon.png"><meta name="apple-mobile-web-app-title" content="Presencial">
-<style>body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;margin:0;padding:16px;max-width:480px;margin:auto}.card{background:#1e293b;border-radius:14px;padding:16px;margin-bottom:12px}h1{font-size:20px}.big{font-size:44px;font-weight:700}.bar{height:12px;background:#334155;border-radius:6px;overflow:hidden;position:relative}.fill{height:100%;background:#22c55e}.meta{position:absolute;top:-3px;width:2px;height:18px;background:#facc15}.row{display:flex;justify-content:space-between;margin:6px 0}input,select,button{font-size:16px;padding:8px;border-radius:8px;border:0;margin:4px 0;width:100%;box-sizing:border-box}button{background:#3b82f6;color:#fff;font-weight:600}.warn{color:#facc15}.ok{color:#22c55e}.small{font-size:13px;color:#94a3b8}.acts{display:flex;gap:8px}.acts button{font-size:18px;padding:14px}.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:13px}.d{border-radius:8px;padding:6px 0;background:#334155;cursor:pointer}.presencial{background:#16a34a}.remoto{background:#475569}.feriado,.folga{background:#7c3aed}.pendente{background:#ca8a04}.fim_de_semana,.futuro{background:#1e293b;color:#64748b}.reg{font-size:13px;display:flex;justify-content:space-between;align-items:center}.reg button{width:auto;padding:4px 8px;background:#dc2626;font-size:12px}.d{min-height:22px;padding:9px 0;user-select:none;-webkit-tap-highlight-color:transparent}.d.sel{background:#0ea5e9;color:#fff;font-weight:700;box-shadow:0 0 0 2px #fff inset}.d.sel::after{content:" ✓"}.multi .d.bloq{opacity:.35;cursor:not-allowed}.multi .d:not(.bloq):not(.sel){box-shadow:0 0 0 1px #64748b inset}.previa{outline:2px dashed #0ea5e9}.tagprev{color:#38bdf8;font-weight:600}#barra{position:fixed;left:0;right:0;bottom:0;background:#0b1220;border-top:1px solid #334155;padding:10px 16px calc(10px + env(safe-area-inset-bottom))}#barra .in{max-width:480px;margin:auto;display:flex;gap:8px}#barra .in button{padding:14px;font-size:17px}#bReg{flex:2;background:#0ea5e9}#bReg:disabled{background:#334155;color:#94a3b8}#bCan{flex:1;background:#475569}body.commulti{padding-bottom:124px}</style></head><body>
+<style>body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;margin:0;padding:16px;max-width:480px;margin:auto}.card{background:#1e293b;border-radius:14px;padding:16px;margin-bottom:12px}h1{font-size:20px}.big{font-size:44px;font-weight:700}.bar{height:12px;background:#334155;border-radius:6px;overflow:hidden;position:relative}.fill{height:100%;background:#22c55e}.meta{position:absolute;top:-3px;width:2px;height:18px;background:#facc15}.row{display:flex;justify-content:space-between;margin:6px 0}input,select,button{font-size:16px;padding:8px;border-radius:8px;border:0;margin:4px 0;width:100%;box-sizing:border-box}button{background:#3b82f6;color:#fff;font-weight:600}.warn{color:#facc15}.ok{color:#22c55e}.small{font-size:13px;color:#94a3b8}.acts{display:flex;gap:8px}.acts button{font-size:18px;padding:14px}.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:13px}.d{border-radius:8px;padding:6px 0;background:#334155;cursor:pointer}.presencial{background:#16a34a}.remoto{background:#475569}.feriado,.folga{background:#7c3aed}.pendente{background:#ca8a04}.fim_de_semana,.futuro{background:#1e293b;color:#64748b}.reg{font-size:13px;display:flex;justify-content:space-between;align-items:center}.reg button{width:auto;padding:4px 8px;background:#dc2626;font-size:12px}.d{min-height:22px;padding:9px 0;user-select:none;-webkit-tap-highlight-color:transparent}.d.sel{background:#0ea5e9;color:#fff;font-weight:700;box-shadow:0 0 0 2px #fff inset}.d.sel::after{content:" ✓"}.multi .d.bloq{opacity:.35;cursor:not-allowed}.multi .d:not(.bloq):not(.sel){box-shadow:0 0 0 1px #64748b inset}.previa{outline:2px dashed #0ea5e9}.tagprev{color:#38bdf8;font-weight:600}#barra{position:fixed;left:0;right:0;bottom:0;background:#0b1220;border-top:1px solid #334155;padding:10px 16px calc(10px + env(safe-area-inset-bottom))}#barra .in{max-width:480px;margin:auto;display:flex;gap:8px}#barra .in button{padding:14px;font-size:17px}#bReg{flex:2;background:#0ea5e9}#bReg:disabled{background:#334155;color:#94a3b8}#bCan{flex:1;background:#475569}body.commulti{padding-bottom:124px}.mesnav{display:flex;align-items:center;gap:8px;margin-bottom:4px}.mesnav .meio{flex:1;text-align:center}.mesnav button{width:42px;flex:0 0 42px;margin:0;padding:4px 0;font-size:22px;line-height:1;background:#334155}.mesnav button:disabled{opacity:.35;cursor:default}#bReg.apagar{background:#dc2626}#bReg.apagar:disabled{background:#334155;color:#94a3b8}</style></head><body>
 <h1>Presencial B3 — meta 60%</h1>
 <div class="card" id="cfg" hidden><p>Cole seu token pessoal (fica salvo só neste aparelho):</p><input id="tk" type="password"><button onclick="salvaTk()">Salvar</button></div>
 <div class="card acts"><button onclick="marca('checkin')">Cheguei</button><button style="background:#475569" onclick="marca('checkout')">Saí</button></div><div class="small" id="am" style="margin:-6px 0 8px"></div>
-<div class="card" id="resumo"><div class="small"><span id="per"></span> <span id="tagprev" class="tagprev"></span></div><div class="big" id="pct">–</div><div class="bar"><div class="fill" id="fill" style="width:0"></div><div class="meta" style="left:60%"></div></div>
+<div class="card" id="resumo"><div class="mesnav" role="group" aria-label="Escolher mês"><button type="button" id="mesAnt" aria-label="Mês anterior">‹</button><div class="meio"><b id="mesNome"></b><div class="small"><span id="per"></span> <span id="tagprev" class="tagprev"></span></div></div><button type="button" id="mesProx" aria-label="Próximo mês">›</button></div><div class="big" id="pct">–</div><div class="bar"><div class="fill" id="fill" style="width:0"></div><div class="meta" style="left:60%"></div></div>
 <div class="row"><span>Dias presenciais</span><b id="feitos">–</b></div><div class="row"><span>Dias úteis no mês</span><b id="uteis">–</b></div><div class="row"><span>Necessários (60%)</span><b id="nec">–</b></div><div class="row"><span>Ainda faltam</span><b id="faltam">–</b></div><p id="st"></p></div>
 <div class="card" id="pend" hidden><b class="warn">Dias sem check-out</b><div id="pendl"></div></div>
-<div class="card"><b>Calendário do mês</b><div class="small">verde presencial · cinza remoto · roxo feriado/folga · amarelo sem check-out</div><div class="cal" id="cal"></div><div id="det" class="small" style="margin-top:8px"></div></div><div id="barra" hidden><div class="small" id="bPrev" style="max-width:480px;margin:0 auto 6px;text-align:center"></div><div class="in"><button id="bReg" type="button" disabled>Registrar 0 dias</button><button id="bCan" type="button">Cancelar</button></div></div>
-<div class="card"><b>Correção manual</b><input type="date" id="dia"><select id="acao"><option value="p1">Fui presencial</option><option value="p0">Não fui presencial</option><option value="ferias">Férias</option><option value="folga">Folga</option></select><button id="bUm" onclick="ajusta()">Registrar</button><div id="multi" hidden><div class="small" id="mmsg" style="margin-top:6px"></div></div><div class="small" id="msg"></div></div>
+<div class="card"><b id="calTit">Calendário do mês</b><div class="small">verde presencial · cinza remoto · roxo feriado/folga · amarelo sem check-out</div><div class="cal" id="cal"></div><div id="det" class="small" style="margin-top:8px"></div></div><div id="barra" hidden><div class="small" id="bPrev" style="max-width:480px;margin:0 auto 6px;text-align:center"></div><div class="in"><button id="bReg" type="button" disabled>Registrar 0 dias</button><button id="bCan" type="button">Cancelar</button></div></div>
+<div class="card"><b>Correção manual</b><input type="date" id="dia"><select id="acao"><option value="p1">Fui presencial</option><option value="p0">Não fui presencial</option><option value="ferias">Férias</option><option value="folga">Folga</option><option value="apagar">Apagar férias/folga</option></select><button id="bUm" onclick="ajusta()">Registrar</button><div id="multi" hidden><div class="small" id="mmsg" style="margin-top:6px"></div></div><div class="small" id="msg"></div></div>
 <p class="small"><a href="#" style="color:#94a3b8" onclick="localStorage.removeItem('tk');location.reload()">Trocar token</a></p>
 <script src="multidias.js"></script>
 <script>
@@ -17,48 +17,78 @@ function salvaTk(){localStorage.setItem('tk',document.getElementById('tk').value
 const call=(p,o={})=>fetch(API+p,{...o,headers:{'Authorization':'Bearer '+tk(),'Content-Type':'application/json'}}).then(r=>{if(!r.ok)throw r.status;return r.json()});
 const E=s=>String(s??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 const br=d=>d.split('-').reverse().join('/');
-let R=null;
+let R=null,CARGA=0,META=60;
+const hojeSP=()=>new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'});
+let MES=hojeSP().slice(0,7);
 function pinta(r){per.textContent=br(r.inicio)+' a '+br(r.fim);pct.textContent=Math.round(r.percentual)+'%';fill.style.width=Math.min(100,r.percentual)+'%';feitos.textContent=r.dias_presenciais;uteis.textContent=r.dias_uteis;nec.textContent=r.dias_necessarios;faltam.textContent=r.faltam;
  st.innerHTML=r.faltam<=0?'<span class="ok">Meta batida! 🎉</span>':r.da_pra_bater?'Ainda dá pra bater a meta.':'<span class="warn">Não dá mais pra bater a meta este mês.</span>'}
-async function carrega(){if(!tk()){cfg.hidden=false;return}const pc=calendario();
- try{const r=await call('/resumo?periodo=mes');R=r;await pc;atualizaMulti();
- if(r.pendentes_checkout&&r.pendentes_checkout.length){pend.hidden=false;pendl.innerHTML=r.pendentes_checkout.map(d=>{d=d.dia||d;if(!/^\d{4}-\d\d-\d\d$/.test(d))return'';return `<div class="row"><span>${br(d)}</span><span><button style="width:auto" onclick="conf('${d}',true)">Contar</button> <button style="width:auto;background:#475569" onclick="conf('${d}',false)">Não contar</button></span></div>`}).join('')}}
- catch(e){st.innerHTML='<span class="warn">'+(e==429?'Muitas tentativas erradas. Espere 15 minutos e tente de novo.':e==401?'Token recusado. Cole só o token, sem a palavra Bearer.':'Erro ao carregar ('+e+').')+'</span>';cfg.hidden=false}}
+function atualizaNav(){const hoje=hojeSP(),nome=Multidias.nomeMes(MES);mesNome.textContent=nome;calTit.textContent='Calendário · '+nome;
+ const ant=Multidias.somarMeses(MES,-1),prox=Multidias.somarMeses(MES,1);
+ mesAnt.disabled=SALVANDO||!Multidias.mesPermitido(ant,hoje);mesProx.disabled=SALVANDO||!Multidias.mesPermitido(prox,hoje);
+ mesAnt.title=mesAnt.disabled&&!SALVANDO?'Limite de '+Multidias.HISTORICO_MESES+' meses atrás':'Mês anterior';
+ mesProx.title=mesProx.disabled&&!SALVANDO?'Mês atual':'Próximo mês'}
+function vaiMes(delta){if(SALVANDO)return;const dest=Multidias.somarMeses(MES,delta);if(!Multidias.mesPermitido(dest,hojeSP()))return;MES=dest;pct.textContent='…';carrega()}
+async function carrega(){if(!tk()){cfg.hidden=false;atualizaNav();return}const id=++CARGA,mes=MES,hoje=hojeSP();atualizaNav();
+ try{const pDias=calendario(mes);
+  if(mes===hoje.slice(0,7)){const [r]=await Promise.all([call('/resumo?periodo=mes'),pDias]);if(id!==CARGA)return;if(typeof r.meta_percentual==='number')META=r.meta_percentual;R=r}
+  else{await pDias;if(id!==CARGA)return;R=Multidias.resumoMes(Object.values(DIAS),hoje,META)}
+  if(id!==CARGA)return;atualizaMulti();mostrarPend(R)}
+ catch(e){if(id!==CARGA)return;if(!R||!R.inicio||R.inicio.slice(0,7)!==MES){pct.textContent='–';feitos.textContent='–';uteis.textContent='–';nec.textContent='–';faltam.textContent='–';per.textContent='';fill.style.width='0'}st.innerHTML='<span class="warn">'+(e==429?'Muitas tentativas erradas. Espere 15 minutos e tente de novo.':e==401?'Token recusado. Cole só o token, sem a palavra Bearer.':'Erro ao carregar ('+e+').')+'</span>';cfg.hidden=false}}
+function mostrarPend(r){const lista=(r.pendentes_checkout||[]).map(d=>d.dia||d).filter(d=>/^\d{4}-\d\d-\d\d$/.test(d));
+ if(!lista.length){pend.hidden=true;pendl.innerHTML='';return}pend.hidden=false;
+ pendl.innerHTML=lista.map(d=>`<div class="row"><span>${br(d)}</span><span><button style="width:auto" onclick="conf('${d}',true)">Contar</button> <button style="width:auto;background:#475569" onclick="conf('${d}',false)">Não contar</button></span></div>`).join('')}
 async function conf(d,p){await call('/ajuste',{method:'POST',body:JSON.stringify({dia:d,presencial:p})});carrega()}
 async function ajusta(){const d=dia.value,a=acao.value;if(!d){msg.textContent='Escolha o dia.';return}
+ if(Multidias.usaVariosDias(a))return;
  try{if(a[0]=='p')await call('/ajuste',{method:'POST',body:JSON.stringify({dia:d,presencial:a=='p1'})});else await call('/ausencia',{method:'POST',body:JSON.stringify({dia:d,tipo:a})});msg.textContent='Registrado ✔';carrega()}catch(e){msg.textContent='Erro: '+e}}
 
 const HR=s=>s?new Date(s).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:'America/Sao_Paulo'}):'—';
 const ORG={gps:'GPS',wifi:'Wi-Fi',manual:'manual',ajuste:'ajuste'};
 let DIAS={};
 async function marca(t){try{await call('/'+t,{method:'POST',body:JSON.stringify({origem:'manual'})});am.textContent=(t=='checkin'?'Check-in':'Check-out')+' registrado às '+HR(new Date())+' ✔';carrega()}catch(e){am.textContent='Erro: '+e}}
-async function calendario(){try{const m=new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'}).slice(0,7);const r=await call('/dias?mes='+m);DIAS={};
- cal.replaceChildren();for(const x of ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb']){const b=document.createElement('b');b.textContent=x;cal.append(b)}
- const pad=(new Date(r.dias[0].dia+'T12:00').getDay())%7;for(let i=0;i<pad;i++)cal.append(document.createElement('span'));
- for(const d of r.dias){if(!/^\d{4}-\d\d-\d\d$/.test(d.dia))continue;DIAS[d.dia]=d;const c=document.createElement('div');c.className='d '+(/^[a-z_]+$/.test(d.status)?d.status:'');c.dataset.dia=d.dia;c.textContent=String(+d.dia.slice(8));c.addEventListener('click',()=>toque(d.dia));cal.append(c)}
- for(const k of [...SEL])if(Multidias.motivoBloqueio(DIAS[k]))SEL.delete(k);marcaCal()}catch(e){cal.textContent='';const sp=document.createElement('span');sp.className='small';sp.textContent='Calendário indisponível ('+e+')';cal.append(sp)}}
-// ---- Vários dias de férias/folga ----
+async function calendario(mes){let r;try{r=await call('/dias?mes='+mes)}catch(e){if(mes===MES){cal.replaceChildren();const sp=document.createElement('span');sp.className='small';sp.textContent='Calendário indisponível ('+e+')';cal.append(sp);DIAS={}}throw e}
+ if(mes!==MES)return;if(!r.dias||!r.dias.length)throw 'mês sem dias';
+ const frag=document.createDocumentFragment();
+ for(const x of ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb']){const b=document.createElement('b');b.textContent=x;frag.append(b)}
+ const pad=(new Date(r.dias[0].dia+'T12:00').getDay())%7;for(let i=0;i<pad;i++)frag.append(document.createElement('span'));
+ const novo={};
+ for(const d of r.dias){if(!/^\d{4}-\d\d-\d\d$/.test(d.dia))continue;novo[d.dia]=d;const c=document.createElement('div');c.className='d '+( /^[a-z_]+$/.test(d.status)?d.status:'');c.dataset.dia=d.dia;c.textContent=String(+d.dia.slice(8));c.addEventListener('click',()=>toque(d.dia));frag.append(c)}
+ DIAS=novo;cal.replaceChildren(frag);for(const k of [...SEL])if(bloqueio(DIAS[k]))SEL.delete(k);marcaCal()}
+// ---- Vários dias: marcar férias/folga ou apagar essas marcas ----
 let MULTI=false,TIPO='ferias',SALVANDO=false;const SEL=new Set();
-const DICA='Toque nos dias do calendário para selecionar. Toque de novo para desmarcar.';
 const NOME={ferias:'férias',folga:'folga'};
-function toque(k){if(!MULTI)return mostra(k);if(SALVANDO)return;const mot=Multidias.motivoBloqueio(DIAS[k]);
- if(mot){mmsg.textContent=br(k)+': '+mot+'.';return}SEL.has(k)?SEL.delete(k):SEL.add(k);mmsg.textContent=DICA;atualizaMulti()}
-function marcaCal(){for(const c of cal.querySelectorAll('.d')){const k=c.dataset.dia;c.classList.toggle('sel',SEL.has(k));c.classList.toggle('bloq',MULTI&&!!Multidias.motivoBloqueio(DIAS[k]));c.setAttribute('aria-pressed',SEL.has(k)?'true':'false')}}
-function atualizaMulti(){marcaCal();const n=SEL.size;
- bReg.textContent=SALVANDO?'Registrando…':'Registrar '+n+(n==1?' dia':' dias')+' de '+NOME[TIPO];bReg.disabled=SALVANDO||!n;bCan.disabled=SALVANDO;
+const apagando=()=>TIPO==='apagar';
+function dica(){return apagando()?'Toque nos dias marcados como férias ou folga. Toque de novo para desmarcar.':'Toque nos dias do calendário para selecionar. Toque de novo para desmarcar.'}
+function bloqueio(d){return apagando()?Multidias.motivoBloqueioApagar(d):Multidias.motivoBloqueio(d)}
+function toque(k){if(!MULTI)return mostra(k);if(SALVANDO)return;const mot=bloqueio(DIAS[k]);
+ if(mot){mmsg.textContent=br(k)+': '+mot+'.';return}SEL.has(k)?SEL.delete(k):SEL.add(k);mmsg.textContent=dica();atualizaMulti()}
+function marcaCal(){for(const c of cal.querySelectorAll('.d')){const k=c.dataset.dia,on=SEL.has(k),bloq=MULTI&&!!bloqueio(DIAS[k]);c.classList.toggle('sel',on);c.classList.toggle('bloq',bloq);c.setAttribute('aria-pressed',on?'true':'false');if(bloq)c.setAttribute('aria-disabled','true');else c.removeAttribute('aria-disabled')}}
+function atualizaMulti(){for(const k of [...SEL])if(bloqueio(DIAS[k]))SEL.delete(k);marcaCal();const n=SEL.size,ap=apagando();
+ bReg.textContent=SALVANDO?(ap?'Apagando…':'Registrando…'):(ap?'Apagar '+n+(n==1?' dia':' dias'):'Registrar '+n+(n==1?' dia':' dias')+' de '+NOME[TIPO]);
+ bReg.disabled=SALVANDO||!n;bReg.classList.toggle('apagar',ap);bCan.disabled=SALVANDO;
  const comPrevia=MULTI&&n>0&&R;resumo.classList.toggle('previa',!!comPrevia);
- if(R){const p=comPrevia?Multidias.previa(R,Object.values(DIAS),SEL):R;pinta(p);bPrev.textContent=comPrevia?'Prévia: '+Math.round(p.percentual)+'% · necessários '+p.dias_necessarios+' de '+p.dias_uteis+' úteis · faltam '+p.faltam:'Nenhum dia selecionado';tagprev.textContent=comPrevia?'· prévia com '+n+(n==1?' dia':' dias')+' de '+NOME[TIPO]+' (ainda não registrado)':''}}
-// Modo de vários dias só existe para Férias/Folga; Fui/Não fui presencial seguem um dia por vez.
+ if(R){const p=comPrevia?(ap?Multidias.previaApagar(R,Object.values(DIAS),SEL):Multidias.previa(R,Object.values(DIAS),SEL)):R;pinta(p);
+  bPrev.textContent=comPrevia?'Prévia: '+Math.round(p.percentual)+'% · necessários '+p.dias_necessarios+' de '+p.dias_uteis+' úteis · faltam '+p.faltam:'Nenhum dia selecionado';
+  tagprev.textContent=comPrevia?(ap?'· prévia apagando '+n+(n==1?' dia':' dias')+' (ainda não confirmado)':'· prévia com '+n+(n==1?' dia':' dias')+' de '+NOME[TIPO]+' (ainda não registrado)'):''}
+ atualizaNav()}
 function modoMulti(on){MULTI=on;if(!on)SEL.clear();multi.hidden=!on;dia.hidden=on;bUm.hidden=on;barra.hidden=!on;document.body.classList.toggle('commulti',on);cal.classList.toggle('multi',on);
- if(on){det.textContent='';msg.textContent='';mmsg.textContent=DICA}atualizaMulti()}
+ if(on){det.textContent='';msg.textContent='';mmsg.textContent=dica()}atualizaMulti()}
 function trocaAcao(){const a=acao.value;if(Multidias.usaVariosDias(a)){TIPO=a;if(!MULTI){modoMulti(true);cal.scrollIntoView({behavior:'smooth',block:'center'})}else atualizaMulti()}else if(MULTI)modoMulti(false)}
 function sai(){acao.value='p1';modoMulti(false)}
-async function registraVarios(){if(!SEL.size||SALVANDO)return;SALVANDO=true;atualizaMulti();const tipo=TIPO;
- const {ok,falhas}=await Multidias.registrar(call,[...SEL],tipo);for(const k of ok)SEL.delete(k);SALVANDO=false;
- if(!falhas.length){sai();msg.textContent=ok.length+(ok.length==1?' dia':' dias')+' de '+NOME[tipo]+' registrado'+(ok.length==1?'':'s')+' ✔'}
- else{const e=falhas[0].erro;mmsg.textContent=(ok.length?ok.length+' registrado'+(ok.length==1?'':'s')+', mas ':'')+falhas.length+' não '+(falhas.length==1?'foi registrado':'foram registrados')+' ('+falhas.map(f=>br(f.dia)).join(', ')+'). '+(e==401?'Token recusado.':e==429?'Muitas tentativas, espere 15 minutos.':'Erro: '+e+'.')+' Eles continuam selecionados: toque em Registrar para tentar de novo.'}
+async function registraVarios(){if(!SEL.size||SALVANDO)return;const tipo=TIPO,lista=[...SEL].sort(),ap=tipo==='apagar';
+ const marcas=ap?lista.map(k=>DIAS[k]&&DIAS[k].ausencia):null;
+ if(ap&&!confirm(Multidias.textoApagar(marcas)))return;
+ SALVANDO=true;atualizaMulti();
+ const {ok,falhas}=ap?await Multidias.apagar(call,lista):await Multidias.registrar(call,lista,tipo);
+ for(const k of ok)SEL.delete(k);SALVANDO=false;
+ if(!falhas.length){sai();
+  if(ap){const tipos=new Set(marcas);msg.textContent=tipos.size===1&&tipos.has('folga')?(ok.length===1?'Folga apagada ✔':ok.length+' folgas apagadas ✔'):tipos.size===1&&tipos.has('ferias')?(ok.length===1?'Férias apagadas ✔':ok.length+' dias de férias apagados ✔'):ok.length+' marcações de férias/folga apagadas ✔'}
+  else msg.textContent=ok.length+(ok.length==1?' dia':' dias')+' de '+NOME[tipo]+' registrado'+(ok.length==1?'':'s')+' ✔'}
+ else{const e=falhas[0].erro,verbo=ap?['apagado','apagados','foi apagado','foram apagados','Apagar']:['registrado','registrados','foi registrado','foram registrados','Registrar'];
+  mmsg.textContent=(ok.length?ok.length+' '+(ok.length==1?verbo[0]:verbo[1])+', mas ':'')+falhas.length+' não '+(falhas.length==1?verbo[2]:verbo[3])+' ('+falhas.map(f=>br(f.dia)).join(', ')+'). '+(e==401?'Token recusado.':e==429?'Muitas tentativas, espere 15 minutos.':'Erro: '+e+'.')+' Eles continuam selecionados: toque em '+verbo[4]+' para tentar de novo.';atualizaMulti()}
  await carrega()}
 acao.addEventListener('change',trocaAcao);bCan.addEventListener('click',sai);bReg.addEventListener('click',registraVarios);
+mesAnt.addEventListener('click',()=>vaiMes(-1));mesProx.addEventListener('click',()=>vaiMes(1));
 function mostra(k){const d=DIAS[k];let s=`<b>${E(br(k))}</b>: ${E(d.status.replace(/_/g,' '))}${d.horas?' · '+E(d.horas)+'h no prédio':''}${d.feriado?' · '+E(d.feriado):''}`;
  for(const g of d.registros||[])s+=`<div class="reg"><span>${HR(g.entrada)} – ${HR(g.saida)} (${E(ORG[g.origem]||g.origem)})</span><button onclick="apaga(${+g.id},'${k}')">Apagar</button></div>`;
  if(d.ausencia){const fe=d.ausencia=='ferias';s+=`<div class="reg"><span>${fe?'Férias registradas':'Folga registrada'}</span><button onclick="apagaAus('${k}',${fe})">Apagar</button></div>`}det.innerHTML=s}
