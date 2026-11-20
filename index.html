@@ -1,98 +1,1163 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Presencial B3</title><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="favicon.png"><meta name="apple-mobile-web-app-title" content="Presencial">
-<style>body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;margin:0;padding:16px;max-width:480px;margin:auto}.card{background:#1e293b;border-radius:14px;padding:16px;margin-bottom:12px}h1{font-size:20px}.big{font-size:44px;font-weight:700}.bar{height:12px;background:#334155;border-radius:6px;overflow:hidden;position:relative}.fill{height:100%;background:#22c55e}.meta{position:absolute;top:-3px;width:2px;height:18px;background:#facc15}.row{display:flex;justify-content:space-between;margin:6px 0}input,select,button{font-size:16px;padding:8px;border-radius:8px;border:0;margin:4px 0;width:100%;box-sizing:border-box}button{background:#3b82f6;color:#fff;font-weight:600}.warn{color:#facc15}.ok{color:#22c55e}.small{font-size:13px;color:#94a3b8}.acts{display:flex;gap:8px}.acts button{font-size:18px;padding:14px}.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:13px}.d{border-radius:8px;padding:6px 0;background:#334155;cursor:pointer}.presencial{background:#16a34a}.remoto{background:#475569}.feriado,.folga{background:#7c3aed}.pendente{background:#ca8a04}.fim_de_semana,.futuro{background:#1e293b;color:#64748b}.reg{font-size:13px;display:flex;justify-content:space-between;align-items:center}.reg button{width:auto;padding:4px 8px;background:#dc2626;font-size:12px}.d{min-height:22px;padding:9px 0;user-select:none;-webkit-tap-highlight-color:transparent}.d.sel{background:#0ea5e9;color:#fff;font-weight:700;box-shadow:0 0 0 2px #fff inset}.d.sel::after{content:" ✓"}.multi .d.bloq{opacity:.35;cursor:not-allowed}.multi .d:not(.bloq):not(.sel){box-shadow:0 0 0 1px #64748b inset}.previa{outline:2px dashed #0ea5e9}.tagprev{color:#38bdf8;font-weight:600}#barra{position:fixed;left:0;right:0;bottom:0;background:#0b1220;border-top:1px solid #334155;padding:10px 16px calc(10px + env(safe-area-inset-bottom))}#barra .in{max-width:480px;margin:auto;display:flex;gap:8px}#barra .in button{padding:14px;font-size:17px}#bReg{flex:2;background:#0ea5e9}#bReg:disabled{background:#334155;color:#94a3b8}#bCan{flex:1;background:#475569}body.commulti{padding-bottom:124px}.mesnav{display:flex;align-items:center;gap:8px;margin-bottom:4px}.mesnav .meio{flex:1;text-align:center}.mesnav button{width:42px;flex:0 0 42px;margin:0;padding:4px 0;font-size:22px;line-height:1;background:#334155}.mesnav button:disabled{opacity:.35;cursor:default}#bReg.apagar{background:#dc2626}#bReg.apagar:disabled{background:#334155;color:#94a3b8}</style></head><body>
-<h1>Presencial B3 — meta 60%</h1>
-<div class="card" id="cfg" hidden><p>Cole seu token pessoal (fica salvo só neste aparelho):</p><input id="tk" type="password"><button onclick="salvaTk()">Salvar</button></div>
-<div class="card acts"><button onclick="marca('checkin')">Cheguei</button><button style="background:#475569" onclick="marca('checkout')">Saí</button></div><div class="small" id="am" style="margin:-6px 0 8px"></div>
-<div class="card" id="resumo"><div class="mesnav" role="group" aria-label="Escolher mês"><button type="button" id="mesAnt" aria-label="Mês anterior">‹</button><div class="meio"><b id="mesNome"></b><div class="small"><span id="per"></span> <span id="tagprev" class="tagprev"></span></div></div><button type="button" id="mesProx" aria-label="Próximo mês">›</button></div><div class="big" id="pct">–</div><div class="bar"><div class="fill" id="fill" style="width:0"></div><div class="meta" style="left:60%"></div></div>
-<div class="row"><span>Dias presenciais</span><b id="feitos">–</b></div><div class="row"><span>Dias úteis no mês</span><b id="uteis">–</b></div><div class="row"><span>Necessários (60%)</span><b id="nec">–</b></div><div class="row"><span>Ainda faltam</span><b id="faltam">–</b></div><p id="st"></p></div>
-<div class="card" id="pend" hidden><b class="warn">Dias sem check-out</b><div id="pendl"></div></div>
-<div class="card"><b id="calTit">Calendário do mês</b><div class="small">verde presencial · cinza remoto · roxo feriado/folga · amarelo sem check-out</div><div class="cal" id="cal"></div><div id="det" class="small" style="margin-top:8px"></div></div><div id="barra" hidden><div class="small" id="bPrev" style="max-width:480px;margin:0 auto 6px;text-align:center"></div><div class="in"><button id="bReg" type="button" disabled>Registrar 0 dias</button><button id="bCan" type="button">Cancelar</button></div></div>
-<div class="card"><b>Correção manual</b><input type="date" id="dia"><select id="acao"><option value="p1">Fui presencial</option><option value="p0">Não fui presencial</option><option value="ferias">Férias</option><option value="folga">Folga</option><option value="apagar">Apagar férias/folga</option></select><button id="bUm" onclick="ajusta()">Registrar</button><div id="multi" hidden><div class="small" id="mmsg" style="margin-top:6px"></div></div><div class="small" id="msg"></div></div>
-<p class="small"><a href="#" style="color:#94a3b8" onclick="localStorage.removeItem('tk');location.reload()">Trocar token</a></p>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0B1220">
+<title>Presencial B3</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="favicon.png">
+<meta name="apple-mobile-web-app-title" content="Presencial">
+<style>
+  :root {
+    --bg: #0B1220;
+    --card: #141C2B;
+    --text: #F8FAFC;
+    --muted: #94A3B8;
+    --primary: #2563EB;
+    --sai: #334155;
+    --green: #22C55E;
+    --green-cell: #15803D;
+    --meta: #EAB308;
+    --folga: #A855F7;
+    --folga-cell: #7C3AED;
+    --remoto: #64748B;
+    --remoto-cell: #475569;
+    --terracota: #C2410C;
+    --border: #1E293B;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Inter, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.4;
+    min-height: 100vh;
+  }
+  button, input, select { font-family: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid #93C5FD; outline-offset: 2px; }
+  .shell { max-width: 440px; margin: 0 auto; padding: 20px 16px 40px; }
+  @media (min-width: 800px) {
+    body { padding: 40px 24px 64px; }
+    .shell { padding-top: 8px; }
+  }
+  .header { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; }
+  .header h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+  .badge {
+    display: inline-flex; align-items: center;
+    padding: 4px 10px; border-radius: 999px;
+    background: var(--primary); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.01em;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .section-label { margin: 0 0 2px; font-size: 13px; color: var(--muted); font-weight: 500; }
+  .section-title { margin: 0 0 12px; font-size: 16px; font-weight: 650; }
+  .acts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .btn {
+    display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 8px;
+    min-height: 56px; padding: 10px 12px;
+    border: 0; border-radius: 14px;
+    font-size: 17px; font-weight: 700; color: #fff;
+    background: var(--primary);
+  }
+  .btn svg { width: 22px; height: 22px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .btn.feito, .btn:disabled { background: var(--sai); color: #CBD5E1; }
+  .btn:disabled { cursor: not-allowed; }
+  .btn.primario { background: var(--primary); color: #fff; }
+  .btn.erro {
+    background: #7F1D1D; color: #FECACA;
+    font-size: 14px; line-height: 1.15; text-align: center;
+  }
+  .hint { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; align-items: center; }
+  .hint span, .hint button { font-size: 12px; color: var(--muted); text-align: center; }
+  .linkish {
+    background: none; border: 0; padding: 8px 4px; min-height: 44px;
+    color: #60A5FA; font-size: 13px; font-weight: 650;
+  }
+  .aviso {
+    margin-top: 10px; padding: 10px 12px; border-radius: 10px;
+    background: rgba(234, 179, 8, 0.12); border: 1px solid rgba(234, 179, 8, 0.5);
+    color: #FDE68A; font-size: 14px; font-weight: 600;
+  }
+  .confirma { margin-top: 10px; padding: 10px 12px; border-radius: 10px; background: #0F172A; border: 1px solid var(--border); }
+  .confirma p { margin: 0 0 8px; font-size: 14px; }
+  .confirma-botoes { display: flex; gap: 8px; }
+  .confirma-botoes button {
+    flex: 1; min-height: 44px; border-radius: 10px; font-weight: 700; font-size: 14px;
+    background: transparent; color: var(--text); border: 1.5px solid #334155;
+  }
+  .confirma-botoes .sim { border-color: var(--primary); color: #93C5FD; }
+  .confirma-botoes .perigo { border-color: #F87171; color: #FECACA; }
+  .small { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+  .mesnav { display: flex; align-items: center; gap: 8px; }
+  .mesnav .meio { flex: 1; text-align: center; }
+  .mes-nome { font-size: 16px; font-weight: 700; }
+  .mesnav button {
+    width: 42px; height: 42px; flex: 0 0 42px; margin: 0; padding: 0;
+    border-radius: 10px; border: 1px solid var(--border); background: #0F172A;
+    color: var(--text); font-size: 22px; line-height: 1;
+  }
+  .mesnav button:disabled { opacity: .35; cursor: default; }
+  .mesnav button.sumido { visibility: hidden; pointer-events: none; }
+  .periodo { margin: 4px 0 14px; text-align: center; font-size: 12px; color: var(--muted); }
+  .tagprev { color: #FDE68A; font-weight: 650; }
+  .pct-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .big { margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+  .big small { font-size: 14px; font-weight: 500; color: var(--muted); margin-left: 6px; letter-spacing: 0; }
+  .meta-label { font-size: 13px; color: var(--meta); font-weight: 700; white-space: nowrap; }
+  .bar-wrap { position: relative; margin: 22px 0 4px; padding-top: 2px; }
+  .bar { position: relative; height: 14px; background: #1E293B; border-radius: 8px; }
+  .fill { height: 100%; width: 0; background: var(--green); border-radius: 8px; }
+  .meta-mark {
+    position: absolute; left: 60%; top: -4px; width: 3px; height: 22px;
+    background: var(--meta); border-radius: 2px; transform: translateX(-1px);
+  }
+  .meta-caption {
+    position: absolute; left: 60%; top: -16px; transform: translateX(-50%);
+    font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--meta);
+  }
+  .rows { margin-top: 12px; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 5px 0; font-size: 15px; }
+  .row b { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
+  .dot.pres { background: var(--green); }
+  .dot.uteis { background: #38BDF8; }
+  .dot.nec { background: var(--meta); }
+  .dot.faltam { background: #FB923C; }
+  .faixa {
+    margin: 14px 0 0; padding: 12px 14px; border-radius: 12px;
+    font-size: 14px; font-weight: 700; text-align: center;
+  }
+  .faixa.ok { color: #DCFCE7; background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.55); }
+  .faixa.mel { color: #FDE68A; background: rgba(234, 179, 8, 0.10); border: 1px solid rgba(234, 179, 8, 0.55); }
+  .faixa.ruim { color: #FFEDD5; background: rgba(194, 65, 12, 0.16); border: 1px solid var(--terracota); }
+  #resumo.previa { box-shadow: 0 0 0 2px var(--meta); }
+  .legenda { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: 12px; color: var(--muted); margin: 0 0 10px; }
+  .legenda span::before {
+    content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    margin-right: 5px; vertical-align: middle;
+  }
+  .l-p::before { background: var(--green-cell); }
+  .l-r::before { background: var(--remoto-cell); }
+  .l-f::before { background: var(--folga-cell); }
+  .l-y::before { background: var(--meta); }
+  .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+  .cal .hd { font-size: 11px; color: var(--muted); font-weight: 700; padding: 4px 0 6px; }
+  .cal .pad { min-height: 0; }
+  .d {
+    min-height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    background: #1E293B; color: #E2E8F0;
+    user-select: none; -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+  }
+  .d.presencial { background: var(--green-cell); color: #fff; }
+  .d.remoto { background: var(--remoto-cell); color: #F8FAFC; }
+  .d.feriado, .d.folga { background: var(--folga-cell); color: #fff; }
+  .d.pendente { background: var(--meta); color: #1C1917; }
+  .d.fim_de_semana, .d.futuro { background: #0F172A; color: #CBD5E1; font-weight: 600; }
+  .d.inerte { cursor: default; }
+  .d.sel { box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px var(--primary); position: relative; z-index: 1; }
+  .multi .d.bloq { opacity: .38; cursor: not-allowed; }
+  .detalhe { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
+  .detalhe b { color: var(--text); }
+  .reg { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 6px; font-size: 13px; }
+  .btn-mini {
+    width: auto; min-height: 32px; padding: 4px 8px; border-radius: 8px;
+    background: transparent; color: #FECACA; border: 1px solid #F87171; font-size: 12px; font-weight: 700;
+  }
+  .seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 0 0 10px; }
+  .seg button {
+    min-height: 48px; padding: 6px 4px; border-radius: 10px;
+    border: 1.5px solid #334155; background: transparent; color: var(--text);
+    font-size: 13px; font-weight: 700;
+  }
+  .seg button.on-p1 { border-color: var(--green); background: rgba(34, 197, 94, 0.16); color: #BBF7D0; }
+  .seg button.on-p0 { border-color: #94A3B8; background: rgba(100, 116, 139, 0.22); color: #E2E8F0; }
+  .seg button.on-folga, .seg button.on-ferias { border-color: var(--folga); background: rgba(168, 85, 247, 0.18); color: #E9D5FF; }
+  .btn-outline {
+    width: 100%; min-height: 48px; border-radius: 12px;
+    border: 1.5px solid var(--primary); background: transparent; color: #93C5FD;
+    font-size: 15px; font-weight: 700;
+  }
+  .btn-outline:disabled { border-color: #334155; color: #94A3B8; cursor: default; }
+  .link-remover {
+    display: inline-flex; align-items: center; min-height: 44px; margin-top: 4px;
+    background: none; border: 0; padding: 0; color: #F87171; font-size: 14px; font-weight: 700;
+  }
+  .pend-actions { display: flex; gap: 6px; }
+  .pend-actions button {
+    width: auto; min-height: 36px; padding: 4px 8px; border-radius: 8px;
+    background: transparent; color: #E2E8F0; border: 1px solid #334155; font-size: 13px; font-weight: 700;
+  }
+  .foot { text-align: center; margin-top: 4px; }
+  .foot .linkish { color: var(--muted); font-weight: 600; font-size: 13px; }
+  .foot .linkish.acao { color: #93C5FD; }
+  #barra {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 5;
+    background: #0B1220; border-top: 1px solid #334155;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  }
+  #barra .in { max-width: 440px; margin: 0 auto; display: flex; gap: 8px; }
+  #bPrev { max-width: 440px; margin: 0 auto 6px; text-align: center; }
+  #bReg { flex: 2; min-height: 48px; border-radius: 12px; border: 1.5px solid var(--primary); background: transparent; color: #93C5FD; font-size: 15px; font-weight: 700; }
+  #bReg:disabled { border-color: #334155; color: #94A3B8; }
+  #bReg.apagar { border-color: #F87171; color: #FECACA; }
+  #bCan { flex: 1; min-height: 48px; border-radius: 12px; border: 0; background: #334155; color: #E2E8F0; font-weight: 700; }
+  body.commulti { padding-bottom: 128px; }
+  #cfg input {
+    width: 100%; font-size: 16px; padding: 12px; border-radius: 10px; border: 1px solid #334155;
+    background: #0F172A; color: var(--text); margin: 8px 0;
+  }
+  #cfg button.btn { width: 100%; }
+  /* No celular o calendário encolhe. O bloco de ponto permanece com toque ≥ 48 px. */
+  @media (max-width: 420px) {
+    .cal { gap: 3px; }
+    .d { min-height: 32px; font-size: 12px; border-radius: 8px; }
+    .seg { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 340px) {
+    .d { min-height: 28px; font-size: 11px; }
+    .big { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="header">
+    <h1>Presencial B3</h1>
+    <span class="badge" id="badge">Meta 60%</span>
+  </header>
+
+  <section class="card" id="cfg" hidden>
+    <p class="section-title">Token deste aparelho</p>
+    <p class="section-label">Cole seu token pessoal. Ele fica salvo só neste aparelho.</p>
+    <input id="tk" type="password" autocomplete="current-password" aria-label="Token pessoal">
+    <button class="btn primario" id="bSalva" type="button">Salvar</button>
+  </section>
+
+  <section class="card" id="hoje" aria-labelledby="hojeTit">
+    <p class="section-label">Status de hoje</p>
+    <h2 class="section-title" id="hojeTit">Registrar ponto</h2>
+    <div class="acts">
+      <button class="btn primario" id="bCheguei" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        <span class="lbl">Cheguei</span>
+      </button>
+      <button class="btn" id="bSai" type="button" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span class="lbl">Saí</span>
+      </button>
+    </div>
+    <div class="hint">
+      <span id="ultimo">Último: —</span>
+      <button type="button" class="linkish" id="bHist">Histórico do dia</button>
+    </div>
+    <div class="aviso" id="avisoHoje" hidden>Hoje sem Saí — toque em Saí ou corrija</div>
+    <div class="confirma" id="confPonto" hidden>
+      <p id="confPontoTxt"></p>
+      <div class="confirma-botoes">
+        <button type="button" id="confPontoNao">Cancelar</button>
+        <button type="button" class="sim" id="confPontoSim">Registrar</button>
+      </div>
+    </div>
+    <p class="small" id="am" role="status"></p>
+  </section>
+
+  <section class="card" id="resumo" aria-labelledby="mesNome">
+    <div class="mesnav" role="group" aria-label="Escolher mês">
+      <button type="button" id="mesAnt" aria-label="Mês anterior">‹</button>
+      <div class="meio"><div class="mes-nome" id="mesNome"></div></div>
+      <button type="button" id="mesProx" aria-label="Próximo mês">›</button>
+    </div>
+    <p class="periodo"><span id="per"></span> <span id="tagprev" class="tagprev"></span></p>
+    <div class="pct-row">
+      <p class="big"><span id="pct">–</span><small>do objetivo</small></p>
+      <div class="meta-label" id="metaLbl">60% (Meta)</div>
+    </div>
+    <div class="bar-wrap">
+      <div class="meta-caption" id="metaCap">Meta</div>
+      <div class="bar" aria-hidden="true">
+        <div class="fill" id="fill"></div>
+        <div class="meta-mark" id="metaMark"></div>
+      </div>
+    </div>
+    <div class="rows">
+      <div class="row"><span><i class="dot pres" aria-hidden="true"></i>Dias presenciais</span><b id="feitos">–</b></div>
+      <div class="row"><span><i class="dot uteis" aria-hidden="true"></i>Dias úteis no mês</span><b id="uteis">–</b></div>
+      <div class="row"><span><i class="dot nec" aria-hidden="true"></i><span id="labNec">Necessários (60%)</span></span><b id="nec">–</b></div>
+      <div class="row"><span><i class="dot faltam" aria-hidden="true"></i>Ainda faltam</span><b id="faltam">–</b></div>
+    </div>
+    <p class="faixa" id="faixa" role="status"></p>
+  </section>
+
+  <section class="card" id="pend" hidden>
+    <h2 class="section-title">Dias sem check-out</h2>
+    <div id="pendl"></div>
+  </section>
+
+  <section class="card" aria-labelledby="calTit">
+    <h2 class="section-title" id="calTit">Calendário</h2>
+    <div class="legenda">
+      <span class="l-p">Presencial</span>
+      <span class="l-r">Remoto</span>
+      <span class="l-f">Feriado/Folga</span>
+      <span class="l-y">Sem check-out</span>
+    </div>
+    <div class="cal" id="cal"></div>
+    <div class="detalhe" id="det"></div>
+  </section>
+
+  <section class="card" id="correcao" hidden>
+    <h2 class="section-title">Correção do dia</h2>
+    <p class="section-label" id="corrData"></p>
+    <div class="seg" id="segTipo" role="group" aria-label="Tipo do dia">
+      <button type="button" data-tipo="p1">Presencial</button>
+      <button type="button" data-tipo="p0">Remoto</button>
+      <button type="button" data-tipo="folga">Folga</button>
+      <button type="button" data-tipo="ferias">Férias</button>
+    </div>
+    <button class="btn-outline" id="bUm" type="button" disabled>Registrar</button>
+    <div id="removerBox">
+      <button type="button" class="link-remover" id="bRemover" hidden>Remover folga</button>
+      <div class="confirma" id="removerConf" hidden>
+        <p id="removerTxt"></p>
+        <div class="confirma-botoes">
+          <button type="button" id="removerNao">Cancelar</button>
+          <button type="button" class="perigo" id="removerSim">Remover</button>
+        </div>
+      </div>
+    </div>
+    <p class="small" id="msg" role="status"></p>
+  </section>
+
+  <section class="card" id="varios" hidden>
+    <h2 class="section-title">Vários dias</h2>
+    <p class="section-label">Férias, folga ou apagar essas marcas. Toque os dias no calendário.</p>
+    <div class="seg" id="variosSeg">
+      <button type="button" data-varios="ferias">Férias</button>
+      <button type="button" data-varios="folga">Folga</button>
+      <button type="button" data-varios="apagar">Apagar</button>
+    </div>
+    <p class="small" id="mmsg"></p>
+  </section>
+
+  <div class="foot">
+    <button type="button" class="linkish acao" id="bVarios">Vários dias de férias ou folga</button>
+    <button type="button" class="linkish" id="trocaTk">Trocar token</button>
+    <p class="small" id="demoNota" hidden>Prévia local — dados de exemplo, nada é enviado.</p>
+  </div>
+</div>
+
+<div id="barra" hidden>
+  <p class="small" id="bPrev"></p>
+  <div class="in">
+    <button id="bReg" type="button" disabled>Registrar 0 dias</button>
+    <button id="bCan" type="button">Cancelar</button>
+  </div>
+</div>
+
 <script src="multidias.js"></script>
 <script>
-const API='https://ndjklfvxyquslfkonjmg.supabase.co/functions/v1/presencial';
-const tk=()=>localStorage.getItem('tk');
-function salvaTk(){localStorage.setItem('tk',document.getElementById('tk').value.trim().replace(/^bearer\s+/i,'').replace(/["'\s]/g,''));location.reload()}
-const call=(p,o={})=>fetch(API+p,{...o,headers:{'Authorization':'Bearer '+tk(),'Content-Type':'application/json'}}).then(r=>{if(!r.ok)throw r.status;return r.json()});
-const E=s=>String(s??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
-const br=d=>d.split('-').reverse().join('/');
-let R=null,CARGA=0,META=60;
-const hojeSP=()=>new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'});
-let MES=hojeSP().slice(0,7);
-function pinta(r){per.textContent=br(r.inicio)+' a '+br(r.fim);pct.textContent=Math.round(r.percentual)+'%';fill.style.width=Math.min(100,r.percentual)+'%';feitos.textContent=r.dias_presenciais;uteis.textContent=r.dias_uteis;nec.textContent=r.dias_necessarios;faltam.textContent=r.faltam;
- st.innerHTML=r.faltam<=0?'<span class="ok">Meta batida! 🎉</span>':r.da_pra_bater?'Ainda dá pra bater a meta.':'<span class="warn">Não dá mais pra bater a meta este mês.</span>'}
-function atualizaNav(){const hoje=hojeSP(),nome=Multidias.nomeMes(MES);mesNome.textContent=nome;calTit.textContent='Calendário · '+nome;
- const ant=Multidias.somarMeses(MES,-1),prox=Multidias.somarMeses(MES,1);
- mesAnt.disabled=SALVANDO||!Multidias.mesPermitido(ant,hoje);mesProx.disabled=SALVANDO||!Multidias.mesPermitido(prox,hoje);
- mesAnt.title=mesAnt.disabled&&!SALVANDO?'Limite de '+Multidias.HISTORICO_MESES+' meses atrás':'Mês anterior';
- mesProx.title=mesProx.disabled&&!SALVANDO?'Mês atual':'Próximo mês'}
-function vaiMes(delta){if(SALVANDO)return;const dest=Multidias.somarMeses(MES,delta);if(!Multidias.mesPermitido(dest,hojeSP()))return;MES=dest;pct.textContent='…';carrega()}
-async function carrega(){if(!tk()){cfg.hidden=false;atualizaNav();return}const id=++CARGA,mes=MES,hoje=hojeSP();atualizaNav();
- try{const pDias=calendario(mes);
-  if(mes===hoje.slice(0,7)){const [r]=await Promise.all([call('/resumo?periodo=mes'),pDias]);if(id!==CARGA)return;if(typeof r.meta_percentual==='number')META=r.meta_percentual;R=r}
-  else{await pDias;if(id!==CARGA)return;R=Multidias.resumoMes(Object.values(DIAS),hoje,META)}
-  if(id!==CARGA)return;atualizaMulti();mostrarPend(R)}
- catch(e){if(id!==CARGA)return;if(!R||!R.inicio||R.inicio.slice(0,7)!==MES){pct.textContent='–';feitos.textContent='–';uteis.textContent='–';nec.textContent='–';faltam.textContent='–';per.textContent='';fill.style.width='0'}st.innerHTML='<span class="warn">'+(e==429?'Muitas tentativas erradas. Espere 15 minutos e tente de novo.':e==401?'Token recusado. Cole só o token, sem a palavra Bearer.':'Erro ao carregar ('+e+').')+'</span>';cfg.hidden=false}}
-function mostrarPend(r){const lista=(r.pendentes_checkout||[]).map(d=>d.dia||d).filter(d=>/^\d{4}-\d\d-\d\d$/.test(d));
- if(!lista.length){pend.hidden=true;pendl.innerHTML='';return}pend.hidden=false;
- pendl.innerHTML=lista.map(d=>`<div class="row"><span>${br(d)}</span><span><button style="width:auto" onclick="conf('${d}',true)">Contar</button> <button style="width:auto;background:#475569" onclick="conf('${d}',false)">Não contar</button></span></div>`).join('')}
-async function conf(d,p){await call('/ajuste',{method:'POST',body:JSON.stringify({dia:d,presencial:p})});carrega()}
-async function ajusta(){const d=dia.value,a=acao.value;if(!d){msg.textContent='Escolha o dia.';return}
- if(Multidias.usaVariosDias(a))return;
- try{if(a[0]=='p')await call('/ajuste',{method:'POST',body:JSON.stringify({dia:d,presencial:a=='p1'})});else await call('/ausencia',{method:'POST',body:JSON.stringify({dia:d,tipo:a})});msg.textContent='Registrado ✔';carrega()}catch(e){msg.textContent='Erro: '+e}}
+const API = 'https://ndjklfvxyquslfkonjmg.supabase.co/functions/v1/presencial';
+const $ = (id) => document.getElementById(id);
+const tk = () => localStorage.getItem('tk');
+const E = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => '&#' + c.charCodeAt(0) + ';');
+const br = (d) => d.split('-').reverse().join('/');
+const brCurto = (iso) => { const [y, m, d] = iso.split('-'); return (+d) + '/' + (+m); };
+const hojeSP = () => new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' });
+const HR = (s) => s ? new Date(s).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' }) : '—';
+const ORG = { gps: 'GPS', wifi: 'Wi-Fi', manual: 'manual', ajuste: 'ajuste' };
+const MESES_CURTOS = ['jan.', 'fev.', 'mar.', 'abr.', 'mai.', 'jun.', 'jul.', 'ago.', 'set.', 'out.', 'nov.', 'dez.'];
+const dataLonga = (iso) => {
+  const [y, m, d] = iso.split('-').map(Number);
+  return d + ' de ' + MESES_CURTOS[m - 1] + ' de ' + y;
+};
+const inteiro = (n) => { const x = Number(n); return Number.isFinite(x) ? String(Math.round(x)) : '–'; };
 
-const HR=s=>s?new Date(s).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:'America/Sao_Paulo'}):'—';
-const ORG={gps:'GPS',wifi:'Wi-Fi',manual:'manual',ajuste:'ajuste'};
-let DIAS={};
-async function marca(t){try{await call('/'+t,{method:'POST',body:JSON.stringify({origem:'manual'})});am.textContent=(t=='checkin'?'Check-in':'Check-out')+' registrado às '+HR(new Date())+' ✔';carrega()}catch(e){am.textContent='Erro: '+e}}
-async function calendario(mes){let r;try{r=await call('/dias?mes='+mes)}catch(e){if(mes===MES){cal.replaceChildren();const sp=document.createElement('span');sp.className='small';sp.textContent='Calendário indisponível ('+e+')';cal.append(sp);DIAS={}}throw e}
- if(mes!==MES)return;if(!r.dias||!r.dias.length)throw 'mês sem dias';
- const frag=document.createDocumentFragment();
- for(const x of ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb']){const b=document.createElement('b');b.textContent=x;frag.append(b)}
- const pad=(new Date(r.dias[0].dia+'T12:00').getDay())%7;for(let i=0;i<pad;i++)frag.append(document.createElement('span'));
- const novo={};
- for(const d of r.dias){if(!/^\d{4}-\d\d-\d\d$/.test(d.dia))continue;novo[d.dia]=d;const c=document.createElement('div');c.className='d '+( /^[a-z_]+$/.test(d.status)?d.status:'');c.dataset.dia=d.dia;c.textContent=String(+d.dia.slice(8));c.addEventListener('click',()=>toque(d.dia));frag.append(c)}
- DIAS=novo;cal.replaceChildren(frag);for(const k of [...SEL])if(bloqueio(DIAS[k]))SEL.delete(k);marcaCal()}
-// ---- Vários dias: marcar férias/folga ou apagar essas marcas ----
-let MULTI=false,TIPO='ferias',SALVANDO=false;const SEL=new Set();
-const NOME={ferias:'férias',folga:'folga'};
-const apagando=()=>TIPO==='apagar';
-function dica(){return apagando()?'Toque nos dias marcados como férias ou folga. Toque de novo para desmarcar.':'Toque nos dias do calendário para selecionar. Toque de novo para desmarcar.'}
-function bloqueio(d){return apagando()?Multidias.motivoBloqueioApagar(d):Multidias.motivoBloqueio(d)}
-function toque(k){if(!MULTI)return mostra(k);if(SALVANDO)return;const mot=bloqueio(DIAS[k]);
- if(mot){mmsg.textContent=br(k)+': '+mot+'.';return}SEL.has(k)?SEL.delete(k):SEL.add(k);mmsg.textContent=dica();atualizaMulti()}
-function marcaCal(){for(const c of cal.querySelectorAll('.d')){const k=c.dataset.dia,on=SEL.has(k),bloq=MULTI&&!!bloqueio(DIAS[k]);c.classList.toggle('sel',on);c.classList.toggle('bloq',bloq);c.setAttribute('aria-pressed',on?'true':'false');if(bloq)c.setAttribute('aria-disabled','true');else c.removeAttribute('aria-disabled')}}
-function atualizaMulti(){for(const k of [...SEL])if(bloqueio(DIAS[k]))SEL.delete(k);marcaCal();const n=SEL.size,ap=apagando();
- bReg.textContent=SALVANDO?(ap?'Apagando…':'Registrando…'):(ap?'Apagar '+n+(n==1?' dia':' dias'):'Registrar '+n+(n==1?' dia':' dias')+' de '+NOME[TIPO]);
- bReg.disabled=SALVANDO||!n;bReg.classList.toggle('apagar',ap);bCan.disabled=SALVANDO;
- const comPrevia=MULTI&&n>0&&R;resumo.classList.toggle('previa',!!comPrevia);
- if(R){const p=comPrevia?(ap?Multidias.previaApagar(R,Object.values(DIAS),SEL):Multidias.previa(R,Object.values(DIAS),SEL)):R;pinta(p);
-  bPrev.textContent=comPrevia?'Prévia: '+Math.round(p.percentual)+'% · necessários '+p.dias_necessarios+' de '+p.dias_uteis+' úteis · faltam '+p.faltam:'Nenhum dia selecionado';
-  tagprev.textContent=comPrevia?(ap?'· prévia apagando '+n+(n==1?' dia':' dias')+' (ainda não confirmado)':'· prévia com '+n+(n==1?' dia':' dias')+' de '+NOME[TIPO]+' (ainda não registrado)'):''}
- atualizaNav()}
-function modoMulti(on){MULTI=on;if(!on)SEL.clear();multi.hidden=!on;dia.hidden=on;bUm.hidden=on;barra.hidden=!on;document.body.classList.toggle('commulti',on);cal.classList.toggle('multi',on);
- if(on){det.textContent='';msg.textContent='';mmsg.textContent=dica()}atualizaMulti()}
-function trocaAcao(){const a=acao.value;if(Multidias.usaVariosDias(a)){TIPO=a;if(!MULTI){modoMulti(true);cal.scrollIntoView({behavior:'smooth',block:'center'})}else atualizaMulti()}else if(MULTI)modoMulti(false)}
-function sai(){acao.value='p1';modoMulti(false)}
-async function registraVarios(){if(!SEL.size||SALVANDO)return;const tipo=TIPO,lista=[...SEL].sort(),ap=tipo==='apagar';
- const marcas=ap?lista.map(k=>DIAS[k]&&DIAS[k].ausencia):null;
- if(ap&&!confirm(Multidias.textoApagar(marcas)))return;
- SALVANDO=true;atualizaMulti();
- const {ok,falhas}=ap?await Multidias.apagar(call,lista):await Multidias.registrar(call,lista,tipo);
- for(const k of ok)SEL.delete(k);SALVANDO=false;
- if(!falhas.length){sai();
-  if(ap){const tipos=new Set(marcas);msg.textContent=tipos.size===1&&tipos.has('folga')?(ok.length===1?'Folga apagada ✔':ok.length+' folgas apagadas ✔'):tipos.size===1&&tipos.has('ferias')?(ok.length===1?'Férias apagadas ✔':ok.length+' dias de férias apagados ✔'):ok.length+' marcações de férias/folga apagadas ✔'}
-  else msg.textContent=ok.length+(ok.length==1?' dia':' dias')+' de '+NOME[tipo]+' registrado'+(ok.length==1?'':'s')+' ✔'}
- else{const e=falhas[0].erro,verbo=ap?['apagado','apagados','foi apagado','foram apagados','Apagar']:['registrado','registrados','foi registrado','foram registrados','Registrar'];
-  mmsg.textContent=(ok.length?ok.length+' '+(ok.length==1?verbo[0]:verbo[1])+', mas ':'')+falhas.length+' não '+(falhas.length==1?verbo[2]:verbo[3])+' ('+falhas.map(f=>br(f.dia)).join(', ')+'). '+(e==401?'Token recusado.':e==429?'Muitas tentativas, espere 15 minutos.':'Erro: '+e+'.')+' Eles continuam selecionados: toque em '+verbo[4]+' para tentar de novo.';atualizaMulti()}
- await carrega()}
-acao.addEventListener('change',trocaAcao);bCan.addEventListener('click',sai);bReg.addEventListener('click',registraVarios);
-mesAnt.addEventListener('click',()=>vaiMes(-1));mesProx.addEventListener('click',()=>vaiMes(1));
-function mostra(k){const d=DIAS[k];let s=`<b>${E(br(k))}</b>: ${E(d.status.replace(/_/g,' '))}${d.horas?' · '+E(d.horas)+'h no prédio':''}${d.feriado?' · '+E(d.feriado):''}`;
- for(const g of d.registros||[])s+=`<div class="reg"><span>${HR(g.entrada)} – ${HR(g.saida)} (${E(ORG[g.origem]||g.origem)})</span><button onclick="apaga(${+g.id},'${k}')">Apagar</button></div>`;
- if(d.ausencia){const fe=d.ausencia=='ferias';s+=`<div class="reg"><span>${fe?'Férias registradas':'Folga registrada'}</span><button onclick="apagaAus('${k}',${fe})">Apagar</button></div>`}det.innerHTML=s}
-async function apagaAus(k,fe){if(!confirm(fe?'Apagar estas férias?':'Apagar esta folga?'))return;try{await call('/ausencias/'+k,{method:'DELETE'});await carrega();mostra(k)}catch(e){det.textContent='Erro: '+e}}
-async function apaga(id,k){if(!confirm('Apagar este registro?'))return;try{await call('/registros/'+id,{method:'DELETE'});await carrega();mostra(k)}catch(e){det.textContent='Erro: '+e}}
-dia.value=new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'});carrega();
-</script></body></html>
+function demoAtivo() {
+  const h = location.hostname;
+  const local = h === 'localhost' || h === '127.0.0.1' || h === '';
+  return local && new URLSearchParams(location.search).get('demo') === '1';
+}
+
+let ULTIMO_ERRO = null;
+async function call(p, o = {}) {
+  if (demoAtivo()) return demoCall(p, o);
+  const r = await fetch(API + p, { ...o, headers: { 'Authorization': 'Bearer ' + tk(), 'Content-Type': 'application/json' } });
+  if (!r.ok) {
+    let detalhe = '';
+    try { const b = await r.json(); detalhe = String(b && (b.erro || b.message) || ''); } catch (e) { detalhe = ''; }
+    ULTIMO_ERRO = { status: r.status, detalhe };
+    throw r.status;
+  }
+  ULTIMO_ERRO = null;
+  return r.json();
+}
+function ehPerimetro(status) {
+  if (!ULTIMO_ERRO || ULTIMO_ERRO.status !== status) return false;
+  return /per[ií]metro|geofence|fora do local|fora da [aá]rea/i.test(ULTIMO_ERRO.detalhe || '');
+}
+
+let R = null, CARGA = 0, META = 60;
+let MES = hojeSP().slice(0, 7);
+let DIAS = {};
+let HOJE_DIA = null;
+let SEL_DIA = null;
+let TIPO_SALVO = null;
+let TIPO_ESCOLHA = null;
+let ERRO_PONTO = null;
+let PONTO_CONF = null;
+let MULTI = false, TIPO = 'ferias', SALVANDO = false;
+const SEL = new Set();
+const NOME = { ferias: 'férias', folga: 'folga' };
+let DEMO_PRESELECT = demoAtivo();
+
+function salvaTk() {
+  localStorage.setItem('tk', $('tk').value.trim().replace(/^bearer\s+/i, '').replace(/["'\s]/g, ''));
+  location.reload();
+}
+
+function tituloMes(ym) {
+  const n = Multidias.nomeMes(ym);
+  return n ? n.charAt(0).toUpperCase() + n.slice(1) : ym;
+}
+function atualizaBadge() {
+  const n = Math.round(META);
+  $('badge').textContent = 'Meta ' + n + '%';
+  $('metaLbl').textContent = n + '% (Meta)';
+  $('labNec').textContent = 'Necessários (' + n + '%)';
+}
+function atualizaNav() {
+  const hoje = hojeSP();
+  $('mesNome').textContent = Multidias.nomeMes(MES);
+  $('calTit').textContent = 'Calendário · ' + tituloMes(MES);
+  const ant = Multidias.somarMeses(MES, -1);
+  const prox = Multidias.somarMeses(MES, 1);
+  const noAtual = MES === hoje.slice(0, 7);
+  $('mesAnt').disabled = SALVANDO || !Multidias.mesPermitido(ant, hoje);
+  $('mesProx').disabled = SALVANDO || !Multidias.mesPermitido(prox, hoje);
+  $('mesProx').classList.toggle('sumido', noAtual);
+  $('mesProx').setAttribute('aria-hidden', noAtual ? 'true' : 'false');
+  $('mesProx').tabIndex = noAtual ? -1 : 0;
+  $('mesAnt').title = $('mesAnt').disabled && !SALVANDO ? 'Limite de ' + Multidias.HISTORICO_MESES + ' meses atrás' : 'Mês anterior';
+  $('mesProx').title = noAtual ? 'Mês atual' : 'Próximo mês';
+}
+function vaiMes(delta) {
+  if (SALVANDO) return;
+  const dest = Multidias.somarMeses(MES, delta);
+  if (!Multidias.mesPermitido(dest, hojeSP())) return;
+  MES = dest;
+  $('pct').textContent = '…';
+  carrega();
+}
+
+function pinta(r) {
+  $('per').textContent = br(r.inicio) + ' a ' + br(r.fim);
+  $('pct').textContent = Math.round(r.percentual) + '%';
+  $('fill').style.width = Math.min(100, Number(r.percentual) || 0) + '%';
+  const left = Math.round(META) + '%';
+  $('metaMark').style.left = left;
+  $('metaCap').style.left = left;
+  $('feitos').textContent = inteiro(r.dias_presenciais);
+  $('uteis').textContent = inteiro(r.dias_uteis);
+  $('nec').textContent = inteiro(r.dias_necessarios);
+  $('faltam').textContent = inteiro(r.faltam);
+  const faixa = $('faixa');
+  faixa.className = 'faixa';
+  if (r.faltam <= 0) { faixa.textContent = 'Meta batida!'; faixa.classList.add('ok'); }
+  else if (r.da_pra_bater) { faixa.textContent = 'Ainda dá pra bater a meta.'; faixa.classList.add('mel'); }
+  else { faixa.textContent = 'Não dá mais pra bater a meta este mês.'; faixa.classList.add('ruim'); }
+  atualizaBadge();
+}
+
+function regsReais(d) { return ((d && d.registros) || []).filter((g) => g.origem !== 'ajuste'); }
+function jaChegou(d) { return regsReais(d).some((g) => g.entrada); }
+function jaSaiu(d) { return regsReais(d).some((g) => g.saida); }
+function registroAberto(d) { return regsReais(d).some((g) => !g.saida); }
+function ultimoTexto(d) {
+  let best = null;
+  for (const g of regsReais(d)) {
+    if (g.entrada) {
+      const t = Date.parse(g.entrada);
+      if (!best || t >= best.t) best = { t, rot: 'Chegada', iso: g.entrada };
+    }
+    if (g.saida) {
+      const t = Date.parse(g.saida);
+      if (!best || t >= best.t) best = { t, rot: 'Saída', iso: g.saida };
+    }
+  }
+  return best ? 'Último: ' + best.rot + ' às ' + HR(best.iso) : 'Último: —';
+}
+function avisoTexto() {
+  if (registroAberto(HOJE_DIA)) return 'Hoje sem Saí — toque em Saí ou corrija';
+  const lista = ((R && R.pendentes_checkout) || []).map((d) => d.dia || d).filter((d) => /^\d{4}-\d\d-\d\d$/.test(d));
+  if (!lista.length) return '';
+  if (lista.length === 1) return 'Dia ' + br(lista[0]) + ' sem Saí — toque no amarelo ou corrija';
+  return 'Há dias sem Saí — toque no amarelo ou corrija';
+}
+function pintaBotao(btn, tipo, padrao, primario, feito) {
+  const erro = ERRO_PONTO && ERRO_PONTO.tipo === tipo;
+  btn.classList.toggle('erro', !!erro);
+  btn.classList.toggle('primario', !erro && primario);
+  btn.classList.toggle('feito', !erro && feito && !primario);
+  const lbl = btn.querySelector('.lbl');
+  const svg = btn.querySelector('svg');
+  lbl.textContent = erro ? ERRO_PONTO.msg : padrao;
+  if (svg) svg.hidden = !!erro;
+  btn.setAttribute('aria-label', erro ? padrao + ': ' + ERRO_PONTO.msg : padrao);
+}
+function renderConfPonto() {
+  const box = $('confPonto');
+  if (!PONTO_CONF) { box.hidden = true; return; }
+  box.hidden = false;
+  $('confPontoTxt').textContent = PONTO_CONF === 'checkin'
+    ? 'Registrar outra chegada hoje?'
+    : 'Registrar outra saída hoje?';
+}
+function pintaHoje() {
+  const d = HOJE_DIA;
+  const chegou = jaChegou(d);
+  const aberto = registroAberto(d);
+  $('bCheguei').disabled = false;
+  $('bSai').disabled = !chegou;
+  pintaBotao($('bCheguei'), 'checkin', 'Cheguei', !chegou, chegou);
+  pintaBotao($('bSai'), 'checkout', 'Saí', chegou && aberto, chegou && !aberto);
+  $('ultimo').textContent = ultimoTexto(d);
+  const aviso = avisoTexto();
+  const el = $('avisoHoje');
+  el.hidden = !aviso;
+  if (aviso) el.textContent = aviso;
+  if (PONTO_CONF === 'checkin' && !chegou) PONTO_CONF = null;
+  if (PONTO_CONF === 'checkout' && !jaSaiu(d)) PONTO_CONF = null;
+  renderConfPonto();
+}
+
+async function atualizaHojeCache(mes) {
+  const hoje = hojeSP();
+  if (mes === hoje.slice(0, 7)) { HOJE_DIA = DIAS[hoje] || null; return; }
+  try {
+    const r = await call('/dias?mes=' + hoje.slice(0, 7));
+    HOJE_DIA = (r.dias || []).find((d) => d.dia === hoje) || null;
+  } catch (e) { /* mantém o último estado de hoje */ }
+}
+
+async function carrega() {
+  if (!tk() && !demoAtivo()) {
+    $('cfg').hidden = false;
+    atualizaNav();
+    pintaHoje();
+    return;
+  }
+  $('cfg').hidden = true;
+  const id = ++CARGA, mes = MES, hoje = hojeSP();
+  atualizaNav();
+  try {
+    const pDias = calendario(mes);
+    if (mes === hoje.slice(0, 7)) {
+      const [r] = await Promise.all([call('/resumo?periodo=mes'), pDias]);
+      if (id !== CARGA) return;
+      if (typeof r.meta_percentual === 'number') META = r.meta_percentual;
+      R = r;
+    } else {
+      await pDias;
+      if (id !== CARGA) return;
+      R = Multidias.resumoMes(Object.values(DIAS), hoje, META);
+    }
+    if (id !== CARGA) return;
+    await atualizaHojeCache(mes);
+    if (id !== CARGA) return;
+    atualizaMulti();
+    mostrarPend(R);
+    pintaHoje();
+    if (SEL_DIA && DIAS[SEL_DIA] && !MULTI) { renderDetalhe(SEL_DIA); renderCorrecao(SEL_DIA); }
+    else if (SEL_DIA && !DIAS[SEL_DIA]) { SEL_DIA = null; $('correcao').hidden = true; $('det').replaceChildren(); }
+    if (DEMO_PRESELECT) tentarPreselect();
+    marcaCal();
+    atualizaNav();
+  } catch (e) {
+    if (id !== CARGA) return;
+    if (!R || !R.inicio || R.inicio.slice(0, 7) !== MES) {
+      $('pct').textContent = '–';
+      $('feitos').textContent = '–';
+      $('uteis').textContent = '–';
+      $('nec').textContent = '–';
+      $('faltam').textContent = '–';
+      $('per').textContent = '';
+      $('fill').style.width = '0';
+    }
+    const faixa = $('faixa');
+    faixa.className = 'faixa ruim';
+    faixa.textContent = e == 429 ? 'Muitas tentativas erradas. Espere 15 minutos e tente de novo.'
+      : e == 401 ? 'Token recusado. Cole só o token, sem a palavra Bearer.'
+      : 'Erro ao carregar (' + e + ').';
+    $('cfg').hidden = false;
+    pintaHoje();
+  }
+}
+
+function mostrarPend(r) {
+  const lista = (r.pendentes_checkout || []).map((d) => d.dia || d).filter((d) => /^\d{4}-\d\d-\d\d$/.test(d));
+  const box = $('pend'), listaEl = $('pendl');
+  listaEl.replaceChildren();
+  if (!lista.length) { box.hidden = true; return; }
+  box.hidden = false;
+  for (const d of lista) {
+    const row = document.createElement('div');
+    row.className = 'row';
+    const nome = document.createElement('span');
+    nome.textContent = br(d);
+    const acts = document.createElement('span');
+    acts.className = 'pend-actions';
+    const sim = document.createElement('button');
+    sim.type = 'button'; sim.textContent = 'Contar';
+    sim.addEventListener('click', () => conf(d, true));
+    const nao = document.createElement('button');
+    nao.type = 'button'; nao.textContent = 'Não contar';
+    nao.addEventListener('click', () => conf(d, false));
+    acts.append(sim, nao);
+    row.append(nome, acts);
+    listaEl.append(row);
+  }
+}
+async function conf(d, p) {
+  await call('/ajuste', { method: 'POST', body: JSON.stringify({ dia: d, presencial: p }) });
+  carrega();
+}
+
+async function marca(t, confirmado) {
+  const d = HOJE_DIA;
+  if (t === 'checkout' && !jaChegou(d)) return;
+  const repetido = t === 'checkin' ? jaChegou(d) : jaSaiu(d);
+  if (repetido && !confirmado) { PONTO_CONF = t; renderConfPonto(); return; }
+  PONTO_CONF = null;
+  renderConfPonto();
+  const btn = t === 'checkin' ? $('bCheguei') : $('bSai');
+  btn.disabled = true;
+  try {
+    await call('/' + t, { method: 'POST', body: JSON.stringify({ origem: 'manual' }) });
+    ERRO_PONTO = null;
+    $('am').textContent = (t === 'checkin' ? 'Check-in' : 'Check-out') + ' registrado às ' + HR(new Date().toISOString()) + ' ✔';
+    await carrega();
+  } catch (e) {
+    if (ehPerimetro(e)) {
+      ERRO_PONTO = { tipo: t, msg: 'Fora do perímetro' };
+      $('am').textContent = '';
+    } else {
+      ERRO_PONTO = null;
+      $('am').textContent = 'Erro: ' + e;
+    }
+    pintaHoje();
+  }
+}
+
+function diaInerte(d) {
+  if (!d || d.status !== 'fim_de_semana') return false;
+  if (d.ausencia || d.feriado) return false;
+  return !((d.registros || []).length);
+}
+function textoStatus(d) {
+  const extra = d.ausencia === 'ferias' ? 'férias registradas' : d.ausencia === 'folga' ? 'folga registrada' : '';
+  const base = d.status === 'pendente' ? 'sem check-out'
+    : d.status === 'fim_de_semana' ? 'fim de semana'
+    : d.status === 'futuro' ? 'dia futuro'
+    : String(d.status || '').replace(/_/g, ' ');
+  if (extra && d.status === 'presencial') return 'presencial · ' + extra;
+  return extra || base;
+}
+function tipoSalvo(d) {
+  if (!d) return null;
+  if ((d.ausencia === 'ferias' || d.ausencia === 'folga') && d.status !== 'presencial') return d.ausencia;
+  if (d.status === 'presencial') return 'p1';
+  if (d.status === 'remoto') return 'p0';
+  return null;
+}
+
+async function calendario(mes) {
+  let r;
+  try { r = await call('/dias?mes=' + mes); }
+  catch (e) {
+    if (mes === MES) {
+      $('cal').replaceChildren();
+      const sp = document.createElement('p');
+      sp.className = 'small';
+      sp.textContent = 'Calendário indisponível (' + e + ')';
+      $('cal').append(sp);
+      DIAS = {};
+    }
+    throw e;
+  }
+  if (mes !== MES) return;
+  if (!r.dias || !r.dias.length) throw 'mês sem dias';
+  const frag = document.createDocumentFragment();
+  for (const x of ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']) {
+    const b = document.createElement('div');
+    b.className = 'hd';
+    b.textContent = x;
+    frag.append(b);
+  }
+  // Grade Dom→Sáb. 1º nov 2026 cai no domingo (getDay() === 0): zero células vazias antes do dia 1.
+  const pad = (new Date(r.dias[0].dia + 'T12:00').getDay()) % 7;
+  for (let i = 0; i < pad; i++) {
+    const s = document.createElement('span');
+    s.className = 'pad';
+    frag.append(s);
+  }
+  const novo = {};
+  const hoje = hojeSP();
+  for (const d of r.dias) {
+    if (!/^\d{4}-\d\d-\d\d$/.test(d.dia)) continue;
+    novo[d.dia] = d;
+    const c = document.createElement('div');
+    const status = /^[a-z_]+$/.test(d.status) ? d.status : '';
+    c.className = 'd' + (status ? ' ' + status : '');
+    c.dataset.dia = d.dia;
+    c.textContent = String(+d.dia.slice(8));
+    if (d.dia === hoje) c.setAttribute('aria-current', 'date');
+    const inerte = diaInerte(d);
+    c.classList.toggle('inerte', inerte);
+    c.setAttribute('role', 'button');
+    c.tabIndex = inerte ? -1 : 0;
+    if (inerte) c.setAttribute('aria-disabled', 'true');
+    c.setAttribute('aria-label', br(d.dia) + ' ' + textoStatus(d));
+    c.addEventListener('click', () => toque(d.dia));
+    c.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toque(d.dia); }
+    });
+    frag.append(c);
+  }
+  DIAS = novo;
+  $('cal').replaceChildren(frag);
+  for (const k of [...SEL]) if (bloqueio(DIAS[k])) SEL.delete(k);
+  marcaCal();
+}
+
+function renderDetalhe(k) {
+  const d = DIAS[k];
+  const det = $('det');
+  det.replaceChildren();
+  if (!d) return;
+  const linha = document.createElement('div');
+  let extra = '';
+  if (d.horas) extra += ' · ' + d.horas + 'h no prédio';
+  if (d.feriado) extra += ' · ' + d.feriado;
+  linha.innerHTML = '<b>' + E(br(k)) + '</b>: ' + E(textoStatus(d) + extra);
+  det.append(linha);
+  // A marca de folga/férias sai pelo painel ("Remover …"). Aqui ficam só os pontos do dia.
+  for (const g of d.registros || []) {
+    const row = document.createElement('div');
+    row.className = 'reg';
+    const span = document.createElement('span');
+    span.textContent = HR(g.entrada) + ' – ' + HR(g.saida) + ' (' + (ORG[g.origem] || g.origem) + ')';
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'btn-mini'; btn.textContent = 'Apagar';
+    btn.addEventListener('click', () => apaga(g.id, k));
+    row.append(span, btn);
+    det.append(row);
+  }
+}
+function renderSegmentos() {
+  for (const b of $('segTipo').querySelectorAll('button')) {
+    const on = b.dataset.tipo === TIPO_ESCOLHA;
+    b.className = on ? 'on-' + b.dataset.tipo : '';
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+  const mudou = !!(TIPO_ESCOLHA && TIPO_ESCOLHA !== TIPO_SALVO);
+  $('bUm').disabled = SALVANDO || !mudou;
+}
+function renderCorrecao(k) {
+  const d = DIAS[k];
+  $('correcao').hidden = !d || MULTI;
+  if (!d || MULTI) return;
+  $('corrData').textContent = dataLonga(k);
+  TIPO_SALVO = tipoSalvo(d);
+  TIPO_ESCOLHA = TIPO_SALVO;
+  renderSegmentos();
+  const box = $('removerBox');
+  const link = $('bRemover');
+  $('removerConf').hidden = true;
+  if (d.ausencia === 'folga' || d.ausencia === 'ferias') {
+    box.hidden = false;
+    link.hidden = false;
+    link.textContent = d.ausencia === 'ferias' ? 'Remover férias' : 'Remover folga';
+  } else {
+    link.hidden = true;
+  }
+}
+function mostra(k, opt) {
+  const d = DIAS[k];
+  if (!d) return;
+  if (!MULTI && diaInerte(d) && !(opt && opt.forcar)) return;
+  SEL_DIA = k;
+  renderDetalhe(k);
+  renderCorrecao(k);
+  marcaCal();
+  if (opt && opt.scroll) $('correcao').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function tentarPreselect() {
+  const k = '2026-11-20';
+  if (DIAS[k] && DIAS[k].ausencia === 'folga') {
+    DEMO_PRESELECT = false;
+    mostra(k);
+  }
+}
+
+async function ajusta() {
+  const d = SEL_DIA, a = TIPO_ESCOLHA;
+  const dia = DIAS[d];
+  if (!d || !dia || !a || a === TIPO_SALVO) return;
+  $('bUm').disabled = true;
+  SALVANDO = true;
+  try {
+    // Presencial/Remoto no lugar de folga ou férias tira a marca, senão o dia não muda de tipo.
+    if ((dia.ausencia === 'folga' || dia.ausencia === 'ferias') && (a === 'p1' || a === 'p0')) {
+      await call('/ausencias/' + d, { method: 'DELETE' });
+    }
+    if (a[0] === 'p') await call('/ajuste', { method: 'POST', body: JSON.stringify({ dia: d, presencial: a === 'p1' }) });
+    else await call('/ausencia', { method: 'POST', body: JSON.stringify({ dia: d, tipo: a }) });
+    $('msg').textContent = 'Registrado ✔';
+    await carrega();
+  } catch (e) {
+    $('msg').textContent = 'Erro: ' + e;
+    SALVANDO = false;
+    renderSegmentos();
+  }
+  SALVANDO = false;
+  atualizaNav();
+}
+
+function fraseRemover(k, ferias) {
+  return 'Remover ' + (ferias ? 'férias' : 'folga') + ' de ' + brCurto(k) + '? O dia volta a contar na meta.';
+}
+function abrirRemover() {
+  const d = DIAS[SEL_DIA];
+  if (!d || (d.ausencia !== 'folga' && d.ausencia !== 'ferias')) return;
+  $('bRemover').hidden = true;
+  $('removerConf').hidden = false;
+  $('removerTxt').textContent = fraseRemover(SEL_DIA, d.ausencia === 'ferias');
+}
+function fecharRemover() {
+  $('removerConf').hidden = true;
+  if (SEL_DIA && DIAS[SEL_DIA] && DIAS[SEL_DIA].ausencia) $('bRemover').hidden = false;
+}
+
+async function apagaAus(k, fe, jaConfirmou) {
+  if (!jaConfirmou && !confirm(fraseRemover(k, fe))) return;
+  try {
+    await call('/ausencias/' + k, { method: 'DELETE' });
+    $('msg').textContent = fe ? 'Férias apagadas ✔' : 'Folga apagada ✔';
+    await carrega();
+    if (DIAS[k]) mostra(k);
+  } catch (e) {
+    $('det').textContent = 'Erro: ' + e;
+  }
+}
+async function apaga(id, k) {
+  if (!confirm('Apagar este registro?')) return;
+  try {
+    await call('/registros/' + id, { method: 'DELETE' });
+    await carrega();
+    if (DIAS[k]) mostra(k);
+  } catch (e) { $('det').textContent = 'Erro: ' + e; }
+}
+
+const apagando = () => TIPO === 'apagar';
+function dica() {
+  return apagando()
+    ? 'Toque nos dias marcados como férias ou folga. Toque de novo para desmarcar.'
+    : 'Toque nos dias do calendário para selecionar. Toque de novo para desmarcar.';
+}
+function bloqueio(d) { return apagando() ? Multidias.motivoBloqueioApagar(d) : Multidias.motivoBloqueio(d); }
+function toque(k) {
+  if (!MULTI) { mostra(k, { scroll: true }); return; }
+  if (SALVANDO) return;
+  const mot = bloqueio(DIAS[k]);
+  if (mot) { $('mmsg').textContent = br(k) + ': ' + mot + '.'; return; }
+  SEL.has(k) ? SEL.delete(k) : SEL.add(k);
+  $('mmsg').textContent = dica();
+  atualizaMulti();
+}
+function marcaCal() {
+  for (const c of $('cal').querySelectorAll('.d')) {
+    const k = c.dataset.dia;
+    const on = MULTI ? SEL.has(k) : k === SEL_DIA;
+    const bloq = MULTI && !!bloqueio(DIAS[k]);
+    c.classList.toggle('sel', on);
+    c.classList.toggle('bloq', bloq);
+    c.setAttribute('aria-pressed', on ? 'true' : 'false');
+    if (bloq) c.setAttribute('aria-disabled', 'true');
+    else c.removeAttribute('aria-disabled');
+  }
+}
+function atualizaMulti() {
+  for (const k of [...SEL]) if (bloqueio(DIAS[k])) SEL.delete(k);
+  marcaCal();
+  const n = SEL.size, ap = apagando();
+  $('bReg').textContent = SALVANDO ? (ap ? 'Apagando…' : 'Registrando…')
+    : (ap ? 'Apagar ' + n + (n === 1 ? ' dia' : ' dias')
+      : 'Registrar ' + n + (n === 1 ? ' dia' : ' dias') + ' de ' + (NOME[TIPO] || ''));
+  $('bReg').disabled = SALVANDO || !n;
+  $('bReg').classList.toggle('apagar', ap);
+  $('bCan').disabled = SALVANDO;
+  const comPrevia = MULTI && n > 0 && R;
+  $('resumo').classList.toggle('previa', !!comPrevia);
+  if (R) {
+    const p = comPrevia ? (ap ? Multidias.previaApagar(R, Object.values(DIAS), SEL) : Multidias.previa(R, Object.values(DIAS), SEL)) : R;
+    pinta(p);
+    $('bPrev').textContent = comPrevia
+      ? 'Prévia: ' + Math.round(p.percentual) + '% · necessários ' + p.dias_necessarios + ' de ' + p.dias_uteis + ' úteis · faltam ' + p.faltam
+      : (MULTI ? 'Nenhum dia selecionado' : '');
+    $('tagprev').textContent = comPrevia
+      ? (ap ? '· prévia apagando ' + n + (n === 1 ? ' dia' : ' dias') + ' (ainda não confirmado)'
+        : '· prévia com ' + n + (n === 1 ? ' dia' : ' dias') + ' de ' + NOME[TIPO] + ' (ainda não registrado)')
+      : '';
+  }
+  for (const b of $('variosSeg').querySelectorAll('button')) {
+    b.className = MULTI && b.dataset.varios === TIPO ? 'on-' + (TIPO === 'apagar' ? 'folga' : TIPO) : '';
+  }
+  atualizaNav();
+}
+function modoMulti(on) {
+  MULTI = on;
+  if (!on) SEL.clear();
+  if (on) $('varios').hidden = false;
+  $('barra').hidden = !on;
+  document.body.classList.toggle('commulti', on);
+  $('cal').classList.toggle('multi', on);
+  $('correcao').hidden = on || !SEL_DIA;
+  if (on) {
+    $('det').replaceChildren();
+    $('msg').textContent = '';
+    $('mmsg').textContent = dica();
+  } else if (SEL_DIA && DIAS[SEL_DIA]) {
+    renderDetalhe(SEL_DIA);
+    renderCorrecao(SEL_DIA);
+  }
+  atualizaMulti();
+}
+function sai() {
+  $('varios').hidden = true;
+  modoMulti(false);
+}
+async function registraVarios() {
+  if (!SEL.size || SALVANDO) return;
+  const tipo = TIPO, lista = [...SEL].sort(), ap = tipo === 'apagar';
+  const marcas = ap ? lista.map((k) => DIAS[k] && DIAS[k].ausencia) : null;
+  if (ap && !confirm(Multidias.textoApagar(marcas))) return;
+  SALVANDO = true;
+  atualizaMulti();
+  const res = ap ? await Multidias.apagar(call, lista) : await Multidias.registrar(call, lista, tipo);
+  const ok = res.ok, falhas = res.falhas;
+  for (const k of ok) SEL.delete(k);
+  SALVANDO = false;
+  if (!falhas.length) {
+    const tipos = ap ? new Set(marcas) : null;
+    const texto = !ap
+      ? ok.length + (ok.length === 1 ? ' dia' : ' dias') + ' de ' + NOME[tipo] + ' registrado' + (ok.length === 1 ? '' : 's') + ' ✔'
+      : tipos.size === 1 && tipos.has('folga')
+        ? (ok.length === 1 ? 'Folga apagada ✔' : ok.length + ' folgas apagadas ✔')
+        : tipos.size === 1 && tipos.has('ferias')
+          ? (ok.length === 1 ? 'Férias apagadas ✔' : ok.length + ' dias de férias apagados ✔')
+          : ok.length + ' marcações de férias/folga apagadas ✔';
+    sai();
+    $('msg').textContent = texto;
+    if ($('correcao').hidden) {
+      const p = document.createElement('p');
+      p.textContent = texto;
+      $('det').append(p);
+    }
+  } else {
+    const e = falhas[0].erro;
+    const verbo = ap
+      ? ['apagado', 'apagados', 'foi apagado', 'foram apagados', 'Apagar']
+      : ['registrado', 'registrados', 'foi registrado', 'foram registrados', 'Registrar'];
+    $('mmsg').textContent = (ok.length ? ok.length + ' ' + (ok.length === 1 ? verbo[0] : verbo[1]) + ', mas ' : '')
+      + falhas.length + ' não ' + (falhas.length === 1 ? verbo[2] : verbo[3])
+      + ' (' + falhas.map((f) => br(f.dia)).join(', ') + '). '
+      + (e == 401 ? 'Token recusado.' : e == 429 ? 'Muitas tentativas, espere 15 minutos.' : 'Erro: ' + e + '. ')
+      + 'Eles continuam selecionados: toque em ' + verbo[4] + ' para tentar de novo.';
+    atualizaMulti();
+  }
+  await carrega();
+}
+
+async function historico() {
+  const hoje = hojeSP();
+  if (MES !== hoje.slice(0, 7)) { MES = hoje.slice(0, 7); await carrega(); }
+  if (MULTI) sai();
+  if (DIAS[hoje]) mostra(hoje, { forcar: true, scroll: true });
+}
+
+$('bSalva').addEventListener('click', salvaTk);
+$('bCheguei').addEventListener('click', () => marca('checkin'));
+$('bSai').addEventListener('click', () => marca('checkout'));
+$('confPontoNao').addEventListener('click', () => { PONTO_CONF = null; renderConfPonto(); });
+$('confPontoSim').addEventListener('click', () => marca(PONTO_CONF, true));
+$('bHist').addEventListener('click', historico);
+$('mesAnt').addEventListener('click', () => vaiMes(-1));
+$('mesProx').addEventListener('click', () => vaiMes(1));
+$('segTipo').addEventListener('click', (ev) => {
+  const b = ev.target.closest('button');
+  if (!b || !b.dataset.tipo) return;
+  TIPO_ESCOLHA = b.dataset.tipo;
+  renderSegmentos();
+});
+$('bUm').addEventListener('click', ajusta);
+$('bRemover').addEventListener('click', abrirRemover);
+$('removerNao').addEventListener('click', fecharRemover);
+$('removerSim').addEventListener('click', () => {
+  const d = DIAS[SEL_DIA];
+  if (!d) return;
+  apagaAus(SEL_DIA, d.ausencia === 'ferias', true);
+});
+$('bVarios').addEventListener('click', () => {
+  if (MULTI || !$('varios').hidden) { sai(); $('varios').hidden = true; return; }
+  $('varios').hidden = false;
+  $('varios').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
+$('variosSeg').addEventListener('click', (ev) => {
+  const b = ev.target.closest('button');
+  if (!b || !b.dataset.varios) return;
+  TIPO = b.dataset.varios;
+  $('varios').hidden = false;
+  if (!MULTI) modoMulti(true);
+  else atualizaMulti();
+});
+$('bCan').addEventListener('click', sai);
+$('bReg').addEventListener('click', registraVarios);
+$('trocaTk').addEventListener('click', () => { localStorage.removeItem('tk'); location.reload(); });
+
+// ---- Prévia local (só localhost / arquivo). Não chama a API e não grava token. ----
+const demo = { seq: 100, feriados: {}, ausencias: {}, registros: {} };
+function seedDemo(hoje) {
+  demo.feriados = {}; demo.ausencias = {}; demo.registros = {}; demo.seq = 100;
+  const semana = new Date(hoje + 'T12:00:00Z').getUTCDay();
+  const abreHoje = () => {
+    if (semana === 0 || semana === 6 || demo.feriados[hoje] || demo.ausencias[hoje]) return;
+    demo.registros[hoje] = [{ id: demo.seq++, entrada: hoje + 'T08:30:00-03:00', saida: null, origem: 'manual' }];
+  };
+  if (hoje.slice(0, 7) !== '2026-11') { abreHoje(); return; }
+  demo.feriados['2026-11-02'] = 'Finados';
+  const folgaDia = hoje < '2026-11-20' ? '2026-11-20' : '2026-11-13';
+  demo.ausencias[folgaDia] = 'folga';
+  for (const dia of ['2026-11-03', '2026-11-04', '2026-11-06', '2026-11-10', '2026-11-11', '2026-11-12', '2026-11-16', '2026-11-17']) {
+    if (dia === hoje || dia === folgaDia || dia > hoje) continue;
+    demo.registros[dia] = [{ id: demo.seq++, entrada: dia + 'T09:00:00-03:00', saida: dia + 'T18:00:00-03:00', origem: 'manual' }];
+  }
+  abreHoje();
+}
+const SEM_DEMO = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
+function demoDia(iso, hoje) {
+  const wd = new Date(iso + 'T12:00:00Z').getUTCDay();
+  const regs = (demo.registros[iso] || []).map((r) => ({ ...r }));
+  const feriado = demo.feriados[iso];
+  const ausencia = demo.ausencias[iso];
+  const comSaida = regs.filter((r) => r.saida && r.origem !== 'ajuste');
+  const total = comSaida.reduce((a, r) => a + (Date.parse(r.saida) - Date.parse(r.entrada)) / 36e5, 0);
+  const presencial = regs.some((r) => r.origem === 'ajuste') || (comSaida.length > 0 && total >= 1 - 1e-9);
+  let status;
+  if (wd === 0 || wd === 6) status = presencial ? 'presencial' : 'fim_de_semana';
+  else if (feriado) status = presencial ? 'presencial' : 'feriado';
+  else if (ausencia) status = presencial ? 'presencial' : 'folga';
+  else if (presencial) status = 'presencial';
+  else if (regs.some((r) => !r.saida)) status = 'pendente';
+  else if (iso >= hoje) status = 'futuro';
+  else status = 'remoto';
+  return {
+    dia: iso, dia_semana: SEM_DEMO[wd], status,
+    horas: comSaida.length ? Math.round(100 * total) / 100 : null,
+    ...(feriado ? { feriado } : {}),
+    ...(ausencia ? { ausencia } : {}),
+    registros: regs,
+  };
+}
+function demoDias(mes, hoje) {
+  const [y, m] = mes.split('-').map(Number);
+  const ultimo = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  const dias = [];
+  for (let d = 1; d <= ultimo; d++) dias.push(demoDia(mes + '-' + String(d).padStart(2, '0'), hoje));
+  return { mes, hoje, min_horas: 1, dias };
+}
+async function demoCall(p, o = {}) {
+  const method = String(o.method || 'GET').toUpperCase();
+  const geo = new URLSearchParams(location.search).get('geofence') === '1';
+  if (geo && method === 'POST' && (p === '/checkin' || p === '/checkout')) {
+    ULTIMO_ERRO = { status: 403, detalhe: 'fora do perímetro' };
+    throw 403;
+  }
+  ULTIMO_ERRO = null;
+  const hoje = hojeSP();
+  if (method === 'GET' && p.startsWith('/resumo')) return Multidias.resumoMes(demoDias(hoje.slice(0, 7), hoje).dias, hoje, META);
+  if (method === 'GET' && p.startsWith('/dias')) {
+    const q = p.split('?')[1] || '';
+    const mes = new URLSearchParams(q).get('mes') || hoje.slice(0, 7);
+    return demoDias(mes, hoje);
+  }
+  if (method === 'POST' && (p === '/checkin' || p === '/checkout' || p === '/ajuste' || p === '/ausencia')) {
+    const b = o.body ? JSON.parse(o.body) : {};
+    if (p === '/checkin') {
+      const regs = demo.registros[hoje] || (demo.registros[hoje] = []);
+      if (regs.some((r) => !r.saida && r.origem !== 'ajuste')) return { ok: true, ignorado: 'já há check-in aberto hoje' };
+      regs.push({ id: demo.seq++, entrada: new Date().toISOString(), saida: null, origem: 'manual' });
+      return { ok: true };
+    }
+    if (p === '/checkout') {
+      const regs = demo.registros[hoje] || [];
+      const aberto = [...regs].reverse().find((r) => !r.saida && r.origem !== 'ajuste');
+      if (!aberto) return { ok: true, ignorado: 'sem check-in aberto' };
+      aberto.saida = new Date().toISOString();
+      return { ok: true };
+    }
+    if (p === '/ajuste') {
+      if (b.presencial === false) delete demo.registros[b.dia];
+      else demo.registros[b.dia] = [{ id: demo.seq++, entrada: b.dia + 'T09:00:00-03:00', saida: b.dia + 'T18:00:00-03:00', origem: 'ajuste' }];
+      return { ok: true };
+    }
+    demo.ausencias[b.dia] = b.tipo || 'folga';
+    return { ok: true };
+  }
+  if (method === 'DELETE' && p.startsWith('/ausencias/')) {
+    const dia = p.split('/').pop();
+    if (!demo.ausencias[dia]) { ULTIMO_ERRO = { status: 404, detalhe: 'ausência não encontrada' }; throw 404; }
+    delete demo.ausencias[dia];
+    return { ok: true };
+  }
+  if (method === 'DELETE' && p.startsWith('/registros/')) {
+    const id = Number(p.split('/').pop());
+    let found = false;
+    for (const dia of Object.keys(demo.registros)) {
+      const antes = demo.registros[dia].length;
+      demo.registros[dia] = demo.registros[dia].filter((r) => r.id !== id);
+      if (demo.registros[dia].length !== antes) found = true;
+      if (!demo.registros[dia].length) delete demo.registros[dia];
+    }
+    if (!found) { ULTIMO_ERRO = { status: 404, detalhe: 'registro não encontrado' }; throw 404; }
+    return { ok: true };
+  }
+  ULTIMO_ERRO = { status: 404, detalhe: 'não encontrado' };
+  throw 404;
+}
+
+if (demoAtivo()) {
+  seedDemo(hojeSP());
+  $('demoNota').hidden = false;
+  window.__demo = demo;
+  window.__recarrega = carrega;
+}
+atualizaNav();
+carrega();
+</script>
+</body>
+</html>
